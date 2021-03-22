@@ -81,11 +81,7 @@
             echo "Erreur : " . $e->getMessage() . "<br>";
           }
 
-          $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
-          INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
-          INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
-          INNER JOIN competences ON necessite.ID_competences = competences.ID_competences;"
-          $reponseALaUne = $conn->query($requeteALaUne);
+          
                 
           ?>
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -99,32 +95,65 @@
            
               <div class="carousel-inner">
           
-                <div class="item active">
-                  <img src="./Assets/Pictures/WEBalaune.jpg" alt="Los Angeles" style="width:100%;">
-                  <div class="carousel-caption">
-                    <h3>Nom de l'entreprise 1</h3>
-                    <p>Competence</p>
-                    <p>Description du stage</p>
+                <?php 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
+                INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
+                INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
+                WHERE competences = 'HTML' OR competences = 'CSS' OR competences = 'JS' OR competences = 'PHP'
+                ORDER BY ID_offre 
+                DESC LIMIT 1;";
+                $reponseALaUne = $conn->query($requeteALaUne);
+                while($donneesALaUne = $reponseALaUne->fetch()){?>
+                  <div class="item active">
+                    <img src="./Assets/Pictures/WEBALaUne.jpg" alt="1ere offre à la une" style="width:100%;">
+                    <div class="carousel-caption">
+                      <h3><?php echo $donneesALaUne['Nom']; ?></h3>
+                      <p><?php echo $donneesALaUne['Competences']; ?></p>
+                      <p><?php echo $donneesALaUne['Description']; ?></p>
+                    </div>
                   </div>
-                </div>
-          
-                <div class="item">
-                  <img src="./Assets/Pictures/RESEAUalaune.jpg" alt="Chicago" style="width:100%;">
-                  <div class="carousel-caption">
-                    <h3>Nom de l'entreprise 2</h3>
-                    <p>Competence</p>
-                    <p>Description du stage</p>
+                <?php } ?>
+
+                <?php 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
+                INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
+                INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
+                WHERE competences = 'Reseau'OR competences = 'AD'
+                ORDER BY ID_offre 
+                DESC LIMIT 1;";
+                $reponseALaUne = $conn->query($requeteALaUne);
+                while($donneesALaUne = $reponseALaUne->fetch()){?>
+                  <div class="item">
+                    <img src="./Assets/Pictures/RESEAUalaune.jpg" alt="2e offre à la une" style="width:100%;">
+                    <div class="carousel-caption">
+                      <h3><?php echo $donneesALaUne['Nom']; ?></h3>
+                      <p><?php echo $donneesALaUne['Competences']; ?></p>
+                      <p><?php echo $donneesALaUne['Description']; ?></p>
+                    </div>
                   </div>
-                </div>
+                <?php } ?>
               
-                <div class="item">
-                  <img src="./Assets/Pictures/Calaune.jpg" alt="New York" style="width:100%;">
-                  <div class="carousel-caption">
-                    <h3>Nom de l'entreprise 3</h3>
-                    <p>Competence</p>
-                    <p>Description du stage</p>
+                <?php 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
+                INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
+                INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
+                WHERE competences = 'Arduino' OR competences = 'C++' OR competences = 'C' OR competences = 'SQL'
+                ORDER BY ID_offre 
+                DESC LIMIT 1;";
+                $reponseALaUne = $conn->query($requeteALaUne);
+                while($donneesALaUne = $reponseALaUne->fetch()){?>
+                  <div class="item">
+                    <img src="./Assets/Pictures/Calaune.jpg" alt="2e offre à la une" style="width:100%;">
+                    <div class="carousel-caption">
+                      <h3><?php echo $donneesALaUne['Nom']; ?></h3>
+                      <p><?php echo $donneesALaUne['Competences']; ?></p>
+                      <p><?php echo $donneesALaUne['Description']; ?></p>
+                    </div>
                   </div>
-                </div>
+                <?php } ?>
             
               </div>
           
