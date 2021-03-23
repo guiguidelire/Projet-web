@@ -31,8 +31,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li class="active"><a href="./rechercheOffre.php">Rechercher</a></li>
-                          <li><a href="#">Création</a></li>
+                          <li class="active"><a href="../OffresDeStage/rechercheOffre.php">Rechercher</a></li>
+                          <li><a href="../OffresDeStage/création.php">Création</a></li>
                         </ul>
                       </li>
                       
@@ -40,9 +40,9 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Rechercher</a></li>
-                          <li><a href="#">Gerer</a></li>
-                          <li><a href="#">Evalution</a></li>
+                          <li><a href="../Entreprises/rechercher.php">Rechercher</a></li>
+                          <li><a href="../Entreprises/gerer.php">Gerer</a></li>
+                          <li><a href="../Entreprises/evaluation.php">Evalution</a></li>
                         </ul>
                       </li>
                       
@@ -51,8 +51,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Mon Compte</a></li>
-                          <li><a href="#">Deconnexion</a></li>
+                          <li><a href="../Compte/monCompte.php">Mon Compte</a></li>
+                          <li><a href="../Compte/deconnexion.php">Deconnexion</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -121,7 +121,7 @@
         
             <div class="row">
                 <?php 
-                $requete =" SELECT entreprise.Nom, offres_stages.Description, secteur.Secteur_activite
+                $requete =" SELECT entreprise.Nom, offres_stages.Description, secteur.Secteur_activite, entreprise.Ville
                 FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
                 INNER JOIN travaille ON travaille.ID_entreprise = entreprise.ID_entreprise 
@@ -138,29 +138,29 @@
                     if($searchSecteur != NULL || $searchLocalisation!= NULL || $searchCompetence!= NULL){
                         $requete =" $requete WHERE";
                         if($searchSecteur != NULL){
-                            $requete =" $requete secteur.Secteur_activite ='$searchSecteur'";
+                            $requete =" $requete secteur.Secteur_activite LIKE '$searchSecteur%'";
                             $test = 1;
                         }
                         if($searchLocalisation!= NULL){
                             if($test == 1){
                                 $requete = " $requete AND";
                             }
-                            $requete = " $requete entreprise.Ville='$searchLocalisation'";
+                            $requete = " $requete entreprise.Ville LIKE '$searchLocalisation%'";
                             $test =1;
                         }
                         if($searchCompetence!= NULL){
                             if($test == 1){
                                 $requete = " $requete AND";
                             }
-                            $requete = " $requete competences.Competences='$searchCompetence'";
+                            $requete = " $requete competences.Competences LIKE '$searchCompetence%'";
                         }
                         $requete = " $requete GROUP BY offres_stages.ID_offre";
                     }
                 }
                 else{ 
-                    $requete =" SELECT entreprise.Nom, offres_stages.Description 
-                                FROM offres_stages INNER JOIN entreprise 
-                                ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
+                    $requete =" SELECT entreprise.Nom, offres_stages.Description, entreprise.Ville 
+                                FROM offres_stages 
+                                INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
                                 ORDER BY ID_offre 
                                 DESC LIMIT 12";
                 }
@@ -168,6 +168,7 @@
                 while($donnees = $reponse->fetch()){?>
                 <div class="col-lg-4 col-md-6 col-sm-12" >
                     <h3> <?php echo $donnees['Nom'];?></h3>
+                    <h4> <?php echo $donnees['Ville'];?></h4>
                     <p><?php echo $donnees['Description'];?><p>
                     <button>En savoir plus</button>
                 </div>
