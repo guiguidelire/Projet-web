@@ -25,6 +25,7 @@ body {
   margin-top: 0;
   text-align: center;
 }
+
 .Titre_Nouveauté h3 {
   font-size: 30px;
 }
@@ -33,6 +34,7 @@ main {
   margin-top: 50px;
   min-height: 100%;
 }
+
 main .col-lg-4, main .col-md-6, main .col-sm-12 {
   background-color: #222222;
   text-align: center;
@@ -40,11 +42,13 @@ main .col-lg-4, main .col-md-6, main .col-sm-12 {
   padding: 10px 50px;
   background-clip: content-box;
 }
+
 main .col-lg-4 button, main .col-md-6 button, main .col-sm-12 button {
   background-color: red;
   border-style: none;
   padding: 10px;
 }
+
 main .col-lg-4 button:hover, main .col-md-6 button:hover, main .col-sm-12 button:hover {
   color: black;
   background-color: white;
@@ -58,15 +62,48 @@ footer {
   width: 100%;
 }
 
-.caroussel, .slide {
-  width: 100%;
-}
-
 .form-horizontal {
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: #222222;
 }
+
 .form-horizontal label {
   color: white;
-}/*# sourceMappingURL=style.css.map */
+}
+
+.item {
+  height: 50rem;
+  background-color: #000;
+}
+
+.item img {
+  width: 100%;
+}
+
+@media only screen and (max-width: 1200px) {
+  .item {
+    height: 35rem;
+    background-color: #000;
+  }
+  .item img {
+    width: 100%;
+  }
+  .carousel-caption {
+    margin-bottom: 3rem;
+  }
+}
+
+@media only screen and (max-width: 990px) {
+  .item {
+    height: 25rem;
+    background-color: #000;
+  }
+  .item img {
+    width: 100%;
+  }
+  .carousel-caption {
+    margin-bottom: 2rem;
+  }
+}
+/*# sourceMappingURL=style.css.map */
