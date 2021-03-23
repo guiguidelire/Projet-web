@@ -20,19 +20,19 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">CESI Stage</a>
+                    <a class="navbar-brand" href="./index.php">CESI Stage</a>
                   </div>
                   <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
                       
-                      <li class="active"><a href="#">Accueil</a></li>
+                      <li class="active"><a href="./index.php">Accueil</a></li>
                       
                       <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                           <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
-                          <li><a href="#">Création</a></li>
+                          <li><a href="./OffresDeStage/création.php">Création</a></li>
                         </ul>
                       </li>
                       
@@ -40,9 +40,9 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Rechercher</a></li>
-                          <li><a href="#">Gerer</a></li>
-                          <li><a href="#">Evalution</a></li>
+                          <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
+                          <li><a href="./Entreprises/gerer.php">Gerer</a></li>
+                          <li><a href="./Entreprises/evaluation.php">Evalution</a></li>
                         </ul>
                       </li>
                       
@@ -51,8 +51,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Mon Compte</a></li>
-                          <li><a href="#">Deconnexion</a></li>
+                          <li><a href="./Compte/monCompte.php">Mon Compte</a></li>
+                          <li><a href="./Compte/deconnexion.php">Deconnexion</a></li>
                         </ul>
                       </li>
                     </ul>
@@ -197,7 +197,7 @@
             </div>
           </main>
 <!------------------------------------------------------------------------------------------------------------------------->
-<footer class="text-center text-lg-start">
+        <footer class="text-center text-lg-start">
           <div class="container p-4">
             <div class="row">
               <div class="col-lg-4 col-md-6 col-sm-12">
