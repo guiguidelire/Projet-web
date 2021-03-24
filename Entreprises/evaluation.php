@@ -46,7 +46,6 @@
                         </ul>
                       </li>
                       
-                      
                       <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
                         <span class="caret"></span></a>
@@ -104,31 +103,85 @@
             //les informations relatives à celle-ci
             catch(PDOException $e){
                 echo "Erreur : " . $e->getMessage() . "<br>";
-            }
-
-            
-            /*$array = [[],[]];
-            while($donnees = $reponse->fetch()){
-                $array[0][]=$donnees['Nom'];
-                $array[1][]=$donnees['Description'];
-                echo $array[1][0];
-            }*/
-                    
+            }                
             ?>
+
             <div class="rechercheStage">
-                <form class="form-horizontal" action="./evaluation.php" method="post">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="searchNom">Nom de l'entreprise:</label>
-                        <div class="col-sm-9">
-                        <input type="texte" class="form-control" id="searchNom" name="searchNom" placeholder="Entrer une nom">
-                        </div>
+              <form class="form-horizontal" action="./evaluation.php" method="post">
+                <h1 class="col-lg-12 col-md-12 col-sm-12">Evaluation</h1>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="searchNom">Nom de l'entreprise:</label>
+                    <div class="col-sm-9">
+                    <input type="texte" class="form-control" id="searchNom" name="searchNom" placeholder="Entrer une nom">
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="searchNom">Ville:</label>
-                        <div class="col-sm-9">
-                        <input type="texte" class="form-control" id="searchNom" name="searchLocalisation" placeholder="Entrer une localisation">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="searchNom">Ville:</label>
+                    <div class="col-sm-9">
+                    <input type="texte" class="form-control" id="searchNom" name="searchLocalisation" placeholder="Entrer une localisation">
                     </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-default">Rechercher</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            
+<!-------------------------------------------------------------------------------------------------------------------------->
+
+            <div class="row">
+                <?php
+                $test1 = 0;
+                $test2 = 0;
+                if((isset($_POST["searchNom"]) && isset($_POST["searchNom"])) || isset($_GET["searchNom"])){
+                  if(isset($_GET["searchNom"])){
+                    $searchNom =  $_GET["searchNom"];
+                    $searchLocalisation =  $_GET["searchLocalisation"];
+                  }
+                  else{
+                    $searchNom =  $_POST["searchNom"];
+                    $searchLocalisation =  $_POST["searchLocalisation"];
+                  }
+                  if($searchNom!= NULL && $searchLocalisation!= NULL){
+                      $requete = "SELECT * FROM entreprise 
+                      LEFT JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise 
+                      WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                      ORDER BY entreprise.Ville
+                      DESC LIMIT 1";
+                      $test1 = 1;
+                      $reponse = $conn->query($requete);
+                      while($donnees = $reponse->fetch())
+                      {
+                        if(isset($donnees['Ambiance'])){
+                          $test2 = 1;
+                          $requete = "SELECT AVG(`Ambiance`) AS avgAmbiance, AVG(`Accueil_entreprise`) AS avgAccueil_entreprise, 
+                          AVG(`Accompagnement_etudiants`) AS avgAccompagnement_etudiants, AVG(`Taux_apprentissage`) AS avgTaux_apprentissage, 
+                          `Nom`, `NB_stagiaires_CESI`, `Numero_rue`, `Rue`, `Ville`, `Code_postal`, `Pays` 
+                          FROM entreprise 
+                          INNER JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise 
+                          WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                          ORDER BY entreprise.Ville";
+                        }
+                      }
+                    }   
+                    else{ 
+                        $requete ="SELECT Nom, Ville FROM entreprise
+                        ORDER BY Ville
+                        DESC LIMIT 12";
+                    }
+                }
+                else{ 
+                    $requete ="SELECT Nom, Ville FROM entreprise
+                    ORDER BY Ville
+                    DESC LIMIT 12";
+                }
+                
+                $reponse = $conn->query($requete);
+                if($test1 == 1){
+                  ?>
+                    <form class="form-horizontal" action="./evaluation.php?searchNom=<?php echo $searchNom;?>&searchLocalisation=<?php echo $searchLocalisation;?>&submit=1" method="post">
                     <div class="form-group">
                         <label class="control-label col-lg-2 col-md-3 col-sm-5" for="Range: 5">Ambiance</label>
                         <div class="col-lg-4 col-md-3 col-sm-6">
@@ -149,50 +202,36 @@
                         <div class="col-lg-4 col-md-3 col-sm-6">
                             <input type="range" class="custom-range" min="0" max="5" id="customRange" name="Taux_apprentissage">
                         </div>
-    
                         <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Valider</button>
+                          <button type="submit" class="btn btn-default">Valider</button>
                         </div>
-                    </div>
-                </form>
-            </div>
-            
-
-            <div class="row">
-                <?php
-                $test =0; 
-                if(isset($_POST["searchNom"]) && isset($_POST["searchNom"])){
-                    $searchNom =  $_POST["searchNom"];
-                    $searchLocalisation =  $_POST["searchLocalisation"];
-                    $Ambiance =  $_POST["Ambiance"];
-                    $Accueil_entreprise =  $_POST["Accueil_entreprise"];
-                    $Accompagnement_etudiants =  $_POST["Accompagnement_etudiants"];
-                    $Taux_apprentissage =  $_POST["Taux_apprentissage"];
-
-                    
-                    if($searchNom!= NULL && $searchLocalisation!= NULL){
-                        $requete = "SELECT AVG(`Ambiance`) AS avgAmbiance, AVG(`Accueil_entreprise`) AS avgAccueil_entreprise, 
-                        AVG(`Accompagnement_etudiants`) AS avgAccompagnement_etudiants, AVG(`Taux_apprentissage`) AS avgTaux_apprentissage, 
-                        `Nom`, `NB_stagiaires_CESI`, `Numero_rue`, `Rue`, `Ville`, `Code_postal`, `Pays` 
-                        FROM entreprise 
-                        INNER JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise 
-                        ORDER BY entreprise.Ville";
-                        $test = 1;
+                      </div>
+                    </form>
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                  <?php
+                  
+                    if(isset($_GET["submit"])){
+                      $Ambiance =  $_POST["Ambiance"];
+                      $Accueil_entreprise =  $_POST["Accueil_entreprise"];
+                      $Accompagnement_etudiants =  $_POST["Accompagnement_etudiants"];
+                      $Taux_apprentissage =  $_POST["Taux_apprentissage"];
+                      ?>
+                      <h1>Votre note à été prise en compte : </h1>
+                      <h3>
+                        L'ambiance : </br>
+                        <?php star($Ambiance);?></br>
+                        Accueil de l'entreprise : </br>
+                        <?php star($Accueil_entreprise);?></br>
+                        Accompagnement des étudiants : </br>
+                        <?php star($Accompagnement_etudiants);?></br>
+                        Taux d'apprentissage : </br>
+                        <?php star($Taux_apprentissage);?></br>
+                      </h3>
+                      <?php 
                     }
-                    else{ 
-                        $requete ="SELECT Nom, Ville FROM entreprise
-                        ORDER BY Ville
-                        DESC LIMIT 12";
-                    }
-                }
-                else{ 
-                    $requete ="SELECT Nom, Ville FROM entreprise
-                    ORDER BY Ville
-                    DESC LIMIT 12";
-                }
-                
-                $reponse = $conn->query($requete);
-                if($test == 1){
+                    ?>
+                  </div>
+                    <?php
                     while($donnees = $reponse->fetch()){?>
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="col-lg-6 col-md-6 col-sm-12" >
@@ -209,24 +248,35 @@
                                     <?php echo $donnees['NB_stagiaires_CESI'];?>  
                                 </h5>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12" >
-                                <h1>Les notes</h1>
-                                <h3>
-                                    L'ambiance : </br>
-                                    <?php star($donnees['avgAmbiance']);?></br>
-                                    Accueil de l'entreprise : </br>
-                                    <?php star($donnees['avgAccueil_entreprise']);?></br>
-                                    Accompagnement des étudiants : </br>
-                                    <?php star($donnees['avgAccompagnement_etudiants']);?></br>
-                                    Taux d'apprentissage : </br>
-                                    <?php star($donnees['avgTaux_apprentissage']);?></br>
-                                </h3>
-                            </div>
-                        </div>
-                        <?php  
-                        
-
+                            <?php
+                            if($test2 == 1){
+                              ?>
+                                <div class="col-lg-6 col-md-6 col-sm-12" >
+                                  <h1>Les notes</h1>
+                                  <h3>
+                                      L'ambiance : </br>
+                                      <?php star($donnees['avgAmbiance']);?></br>
+                                      Accueil de l'entreprise : </br>
+                                      <?php star($donnees['avgAccueil_entreprise']);?></br>
+                                      Accompagnement des étudiants : </br>
+                                      <?php star($donnees['avgAccompagnement_etudiants']);?></br>
+                                      Taux d'apprentissage : </br>
+                                      <?php star($donnees['avgTaux_apprentissage']);?></br>
+                                  </h3>
+                                </div>
+                              <?php
                             }
+                            else{
+                              ?>
+                                <div class="col-lg-6 col-md-6 col-sm-12" >
+                                  <h1>Les notes</h1>
+                                  <h3>
+                                      L'entreprise n'a pas encore été noté
+                                  </h3>
+                                </div>
+                              <?php
+                            }
+                          }
                             $reponse->closeCursor(); // Termine le traitement de la requête
                 }
                 else{
@@ -234,7 +284,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12" >
                             <h3> <?php echo $donnees['Nom'];?></h3>
                             <h4> <?php echo $donnees['Ville'];?></h4>
-                            <button>Selectionner</button>
+                            <a href="../Entreprises/evaluation.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>"><button>Selectionner</button></a>
                         </div>
                         <?php 
                             }
