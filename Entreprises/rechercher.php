@@ -154,6 +154,7 @@
                 if(isset($_GET["searchNom"])){
                   $searchNom =  $_GET["searchNom"];
                   $searchLocalisation =  $_GET["searchLocalisation"];
+                  $ID_entreprise =  $_GET["ID_entreprise"];                 
                   if($searchNom!= NULL && $searchLocalisation!= NULL){
                       $requete = "SELECT * FROM entreprise 
                       INNER JOIN travaille ON entreprise.ID_entreprise = travaille.ID_entreprise
@@ -172,7 +173,7 @@
                           $requete = "SELECT AVG(`Ambiance`) AS avgAmbiance, AVG(`Accueil_entreprise`) AS avgAccueil_entreprise, 
                           AVG(`Accompagnement_etudiants`) AS avgAccompagnement_etudiants, AVG(`Taux_apprentissage`) AS avgTaux_apprentissage, 
                           `Nom`, `NB_stagiaires_CESI`, `Numero_rue`, `Rue`, `Ville`, `Code_postal`, `Pays`, `Secteur_activite`,
-                          `Description`, `NB_place`, `Remuneration`, `Date_offre`, `Duree_stage` 
+                          `Description`, `NB_place`, `Remuneration`, `Date_offre`, `Duree_stage`, entreprise.ID_entreprise 
                           FROM entreprise 
                           INNER JOIN travaille ON entreprise.ID_entreprise = travaille.ID_entreprise
                           INNER JOIN secteur On travaille.ID_secteur = secteur.ID_secteur
@@ -187,7 +188,7 @@
 
                 if($test1 == 1){
                   ?>
-                    <form class="form-horizontal" action="./rechercher.php?searchNom=<?php echo $searchNom;?>&searchLocalisation=<?php echo $searchLocalisation;?>&submit=1" method="post">
+                    <form class="form-horizontal" action="./rechercher.php?searchNom=<?php echo $searchNom;?>&searchLocalisation=<?php echo $searchLocalisation;?>&ID_entreprise=<?php echo $ID_entreprise;?>&submit=1" method="post">
                     <div class="form-group">
                         <label class="control-label col-lg-2 col-md-3 col-sm-5" for="Range: 5">Ambiance</label>
                         <div class="col-lg-4 col-md-3 col-sm-6">
@@ -214,25 +215,62 @@
                       </div>
                     </form>
                   <div class="col-lg-12 col-md-12 col-sm-12">
+
                   <?php
-                    if(isset($_GET["submit"])){
-                      $Ambiance =  $_POST["Ambiance"];
-                      $Accueil_entreprise =  $_POST["Accueil_entreprise"];
-                      $Accompagnement_etudiants =  $_POST["Accompagnement_etudiants"];
-                      $Taux_apprentissage =  $_POST["Taux_apprentissage"];
-                      ?>
-                      <h1>Votre note à été prise en compte : </h1>
-                      <h3>
-                        L'ambiance : </br>
-                        <?php star($Ambiance);?></br>
-                        Accueil de l'entreprise : </br>
-                        <?php star($Accueil_entreprise);?></br>
-                        Accompagnement des étudiants : </br>
-                        <?php star($Accompagnement_etudiants);?></br>
-                        Taux d'apprentissage : </br>
-                        <?php star($Taux_apprentissage);?></br>
-                      </h3>
-                      <?php 
+                    $ID_utilisateur = 2;
+                    $requete2 = "SELECT * FROM entreprise 
+                    LEFT JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise 
+                    WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                    ORDER BY entreprise.Ville";
+                    $reponse = $conn->query($requete2);
+                    while($donnees = $reponse->fetch()){
+                      if($ID_utilisateur == $donnees['ID_utilisateur']){
+                        $vote = true;
+                      }
+                    }
+                    if($vote == false){
+                      if(isset($_GET["submit"])){
+                        $Ambiance =  $_POST["Ambiance"];
+                        $Accueil_entreprise =  $_POST["Accueil_entreprise"];
+                        $Accompagnement_etudiants =  $_POST["Accompagnement_etudiants"];
+                        $Taux_apprentissage =  $_POST["Taux_apprentissage"];
+                        ?>
+                        <h1>Votre note à été prise en compte : </h1>
+                        <h3>
+                          L'ambiance : </br>
+                          <?php star($Ambiance);?></br>
+                          Accueil de l'entreprise : </br>
+                          <?php star($Accueil_entreprise);?></br>
+                          Accompagnement des étudiants : </br>
+                          <?php star($Accompagnement_etudiants);?></br>
+                          Taux d'apprentissage : </br>
+                          <?php star($Taux_apprentissage);?></br>
+                        </h3>
+                        <?php
+
+                        $send = "INSERT INTO evaluer(`ID_entreprise`, `ID_utilisateur`, `Ambiance`, `Accueil_entreprise`, `Accompagnement_etudiants`, `Taux_apprentissage`) 
+                        VALUES('$ID_entreprise', $ID_utilisateur, $Ambiance, $Accueil_entreprise, $Accompagnement_etudiants, $Taux_apprentissage);";
+                        $conn->exec($send);
+                        $test2 = 1;
+                        $requete = "SELECT AVG(`Ambiance`) AS avgAmbiance, AVG(`Accueil_entreprise`) AS avgAccueil_entreprise, 
+                        AVG(`Accompagnement_etudiants`) AS avgAccompagnement_etudiants, AVG(`Taux_apprentissage`) AS avgTaux_apprentissage, 
+                        `Nom`, `NB_stagiaires_CESI`, `Numero_rue`, `Rue`, `Ville`, `Code_postal`, `Pays`, `Secteur_activite`,
+                        `Description`, `NB_place`, `Remuneration`, `Date_offre`, `Duree_stage`, entreprise.ID_entreprise 
+                        FROM entreprise 
+                        INNER JOIN travaille ON entreprise.ID_entreprise = travaille.ID_entreprise
+                        INNER JOIN secteur On travaille.ID_secteur = secteur.ID_secteur
+                        INNER JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise
+                        LEFT JOIN offres_stages ON entreprise.ID_entreprise = offres_stages.ID_entreprise 
+                        WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                        ORDER BY entreprise.Ville";
+                      }
+                    }
+                    else{
+                      if(isset($_GET["submit"])){
+                        ?>
+                        <h1>Vous avez déja évalué cette entreprise</h1>
+                        <?php
+                      }
                     }
                     ?>
                   </div>
@@ -305,14 +343,14 @@
                               <h3> <?php echo $donnees['Nom'];?></h3>
                               <h4> <?php echo $donnees['Ville'];?></h4>
                               <p><?php echo $donnees['Description'];?><p>
-                              <button>En savoir plus</button>
+                              <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>"><button>En savoir plus</button></a>
                           </div>
                           <?php 
                           }
                           $reponse->closeCursor(); // Termine le traitement de la requête
                 }
                 else{
-                $requete =" SELECT entreprise.Nom, secteur.Secteur_activite, entreprise.Ville
+                $requete =" SELECT entreprise.Nom, secteur.Secteur_activite, entreprise.Ville, entreprise.ID_entreprise
                 FROM entreprise
                 INNER JOIN travaille ON travaille.ID_entreprise = entreprise.ID_entreprise 
                 INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur";
@@ -346,7 +384,7 @@
                     }
                 }
                 else{ 
-                    $requete =" SELECT Nom, Secteur_activite, entreprise.Ville
+                    $requete =" SELECT Nom, Secteur_activite, entreprise.Ville, entreprise.ID_entreprise
                                 FROM entreprise
                                 INNER JOIN travaille ON travaille.ID_entreprise = entreprise.ID_entreprise 
                                 INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur 
@@ -359,7 +397,7 @@
                     <h3> <?php echo $donnees['Nom'];?></h3>
                     <h4> <?php echo $donnees['Ville'];?></h4>
                     <p> <?php echo $donnees['Secteur_activite'];?><p>
-                    <a href="../Entreprises/rechercher.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>"><button>En savoir plus</button></a>
+                    <a href="../Entreprises/rechercher.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_entreprise=<?php echo $donnees['ID_entreprise'];?>"><button>En savoir plus</button></a>
                 </div>
                 <?php 
                     }
