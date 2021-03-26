@@ -142,10 +142,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class=" col-lg-1 col-md-1 col-sm-offset-3 col-sm-1">
-                                    <button type="submit" class="btn btn-default">Créer</button>
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-1 ">
-                                    <button type="reset" class="btn btn-default">Réinitialiser</button>
+                                    <button type="submit" class="btn btn-default">Connexion</button>
                                 </div>
                             </div>
                         </div>
