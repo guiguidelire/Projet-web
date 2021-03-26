@@ -16,7 +16,7 @@
         
     </head>
     <body>
-        <header>
+    <header>
             <nav class="navbar navbar-inverse navbar-fixed-top"> 
                 <div class="container-fluid">
                   <div class="navbar-header">
@@ -36,8 +36,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="../OffresDeStage/rechercheOffre.php">Rechercher</a></li>
-                          <li><a href="../OffresDeStage/création.php">Création</a></li>
+                          <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
+                          <li><a href="./OffresDeStage/création.php">Création</a></li>
                         </ul>
                       </li>
                       
@@ -45,8 +45,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="../Entreprises/rechercher.php">Rechercher</a></li>
-                          <li><a href="../Entreprises/gerer.php">Gerer</a></li>
+                          <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
+                          <li><a href="./Entreprises/gerer.php">Gerer</a></li>
                         </ul>
                       </li>
                       
@@ -55,8 +55,13 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="../Compte/monCompte.php">Mon Compte</a></li>
-                          <li><a href="../Compte/deconnexion.php">Deconnexion</a></li>
+                          <li><a href="./Compte/monCompte.php">Mon Compte</a></li>
+                          <?php 
+                            if(isset($_COOKIE['Login'])){ ?>
+                              <li><a href="./Compte/deconnexion.php">Deconnexion</a></li>
+                              <?php
+                            }
+                          ?>
                         </ul>
                       </li>
                     </ul>
