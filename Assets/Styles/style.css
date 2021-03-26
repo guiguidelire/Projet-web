@@ -47,6 +47,7 @@ main .col-lg-4 button, main .col-md-6 button, main .col-sm-12 button {
   background-color: red;
   border-style: none;
   padding: 10px;
+  color: white;
 }
 
 main .col-lg-4 button:hover, main .col-md-6 button:hover, main .col-sm-12 button:hover {

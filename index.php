@@ -42,7 +42,6 @@
                         <ul class="dropdown-menu">
                           <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
                           <li><a href="./Entreprises/gerer.php">Gerer</a></li>
-                          <li><a href="./Entreprises/evaluation.php">Evalution</a></li>
                         </ul>
                       </li>
                       
@@ -96,7 +95,7 @@
               <div class="carousel-inner">
           
                 <?php 
-                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences, offres_stages.ID_offre, entreprise.Ville  FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
                 INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
                 INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
@@ -111,12 +110,13 @@
                       <h3><?php echo $donneesALaUne['Nom']; ?></h3>
                       <p><?php echo $donneesALaUne['Competences']; ?></p>
                       <p><?php echo $donneesALaUne['Description']; ?></p>
+                      <a href="./OffresDeStage/détailOffre.php?searchNom=<?php echo $donneesALaUne['Nom'];?>&searchLocalisation=<?php echo $donneesALaUne['Ville'];?>&ID_offre=<?php echo $donneesALaUne['ID_offre'];?>"><button>En savoir plus</button></a>
                     </div>
                   </div>
                 <?php } ?>
 
                 <?php 
-                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences, offres_stages.ID_offre, entreprise.Ville  FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
                 INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
                 INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
@@ -131,12 +131,13 @@
                       <h3><?php echo $donneesALaUne['Nom']; ?></h3>
                       <p><?php echo $donneesALaUne['Competences']; ?></p>
                       <p><?php echo $donneesALaUne['Description']; ?></p>
+                      <a href="./OffresDeStage/détailOffre.php?searchNom=<?php echo $donneesALaUne['Nom'];?>&searchLocalisation=<?php echo $donneesALaUne['Ville'];?>&ID_offre=<?php echo $donneesALaUne['ID_offre'];?>"><button>En savoir plus</button></a>
                     </div>
                   </div>
                 <?php } ?>
               
                 <?php 
-                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences, offres_stages.ID_offre, entreprise.Ville  FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
                 INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
                 INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
@@ -151,6 +152,7 @@
                       <h3><?php echo $donneesALaUne['Nom']; ?></h3>
                       <p><?php echo $donneesALaUne['Competences']; ?></p>
                       <p><?php echo $donneesALaUne['Description']; ?></p>
+                      <a href="./OffresDeStage/détailOffre.php?searchNom=<?php echo $donneesALaUne['Nom'];?>&searchLocalisation=<?php echo $donneesALaUne['Ville'];?>&ID_offre=<?php echo $donneesALaUne['ID_offre'];?>"><button>En savoir plus</button></a>
                     </div>
                   </div>
                 <?php } ?>
@@ -174,7 +176,7 @@
             <div class="Nouveauté">
               <?php
                 
-                $requete =" SELECT entreprise.Nom, offres_stages.Description 
+                $requete =" SELECT entreprise.Nom, offres_stages.Description, entreprise.Ville, offres_stages.ID_offre 
                             FROM offres_stages INNER JOIN entreprise 
                             ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
                             ORDER BY ID_offre 
@@ -187,7 +189,7 @@
                   <div class="col-lg-4 col-md-6 col-sm-12" >
                     <h3>Stage chez <?php echo $donnees['Nom'];?></h3>
                     <p><?php echo $donnees['Description'];?><p>
-                    <button>En savoir plus</button>
+                    <a href="./OffresDeStage/détailOffre.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_offre=<?php echo $donnees['ID_offre'];?>"><button>En savoir plus</button></a>
                   </div>
                 <?php
                   }
