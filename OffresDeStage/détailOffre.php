@@ -123,7 +123,7 @@
                               <h4>
                                   Duréee du stage : 
                                   <?php echo $donnees['Duree_stage'];?> mois 
-                              </h4>dd
+                              </h4>
                               <h4>
                                   Date du début du stage :
                                   <?php echo $donnees['Date_offre'];?>
