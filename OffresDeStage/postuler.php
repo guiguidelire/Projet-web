@@ -60,9 +60,11 @@
               </nav>
         </header>
 
+
 <!------------------------------------------------------------------------------------------------------------------------->
 
-        <main>
+
+<main>
             <?php
             $servername = 'localhost';
             $username = 'root';
@@ -95,80 +97,85 @@
                 while($donnees = $reponse->fetch()){
                     ?>
                     <div class="form-horizontal">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" action="../OffresDeStage/postuler.php?ID_offre=<?php echo $ID_offre;?>&submit=1" method="post">
                             <div class="form-group">
                                 <h1 class="col-lg-12 col-md-12 col-sm-12"><?php echo $donnees['Nom']?></h1>
                             </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="searchNom">CV:</label>
+                                <div class="col-sm-9">
+                                <input type="texte" class="form-control" id="searchNom" name="cv" placeholder="Entrer un cv">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="searchLocalisation">Lettre de motivation :</label>
+                                <div class="col-sm-9">
+                                <input type="texte" class="form-control" id="searchLocalisation" name="lm" placeholder="Entrer une lettre de motivation">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Postuler</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="col-lg-12 col-md-12 col-sm-12" >
-                            <a href="../Entreprises/détailEntreprise.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_entreprise=<?php echo $donnees['ID_entreprise'];?>"><button class="btn btn-default">En savoir plus sur <?php echo $donnees['Nom']?></button></a>
-                            <h3 class="col-lg-12 col-md-12 col-sm-12">Description du stage : <?php echo $donnees['Description']?></h3>
-                        </div>                       
-                          <div class="col-lg-6 col-md-6 col-sm-12" >
-                              <h4>
-                                  Secteur : 
-                                  <?php echo $donnees['Secteur_activite'];?>
-                              </h4>
-                              <h4>
-                                  <?php echo $donnees['Numero_rue'];?>, 
-                                  <?php echo $donnees['Rue'];?></br>
-                                  <?php echo $donnees['Code_postal'];?>
-                                  <?php echo $donnees['Ville'];?>,
-                                  <?php echo $donnees['Pays'];?>
-                              </h4>
-                          </div>
-                          <div class="col-lg-6 col-md-6 col-sm-12" >
-                              <h4>
-                                  Duréee du stage : 
-                                  <?php echo $donnees['Duree_stage'];?> mois 
-                              </h4>dd
-                              <h4>
-                                  Date du début du stage :
-                                  <?php echo $donnees['Date_offre'];?>
-                              </h4>
-                              <h4>
-                                  Nombre de place : 
-                                  <?php echo $donnees['NB_place'];?>  
-                              </h4>
-                              <h4>
-                                  Rémunération : 
-                                  <?php echo $donnees['Remuneration'];?> €  
-                              </h4>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12" >
-                        <h2>Compétence requise :</h2>
-                        <?php
-                        $requete = "SELECT * FROM offres_stages
-                        INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
-                        INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
-                        WHERE offres_stages.ID_offre = $ID_offre";
-                        $reponse = $conn->query($requete);
-                        while($donnees = $reponse->fetch()){
-                          ?>
-                              <h4>
-                                  <?php echo $donnees['Competences'];?> 
-                              </h4>
-                        </div>
-                        <?php
-                        }
-                        ?>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                      <div class="col-lg-12 col-md-12 col-sm-12">
-                        <a href="../OffresDeStage/postuler.php?ID_offre=<?php echo $ID_offre;?>"><button class="btn btn-default">Postuler</button></a>
-                      </div>
-                    </div>
-                    <?php
+                <?php
                 }
+                $ID_utilisateur = 4;
+                $requete2 = "SELECT * FROM offres_stages
+                INNER JOIN postuler ON offres_stages.ID_offre = postuler.ID_offre 
+                WHERE offres_stages.ID_offre = $ID_offre";
+                $reponse = $conn->query($requete2);
+                $postul = false;
+                while($donnees = $reponse->fetch()){
+                    if($ID_utilisateur == $donnees['ID_utilisateur']){
+                        $postul = true;
+                        break;
+                    }
+                    else{
+                        $postul = false;
+                    }
+                }
+                ?>
+                <div class="col-lg-12 col-md-12 col-sm-12" >
+                <?php
+                if($postul == false){
+                    if(isset($_GET["submit"])){
+                        $cv =  $_POST["cv"];
+                        $lm =  $_POST["lm"];
+                        ?>
+                        <h1>Votre candidature a bien été prise en compte</h1>
+                        <?php
+                        $send = "INSERT INTO postuler(`ID_offre`, `ID_utilisateur`, `CV`, `Lm`, `Etat`) 
+                        VALUES($ID_offre, $ID_utilisateur, '$cv', '$lm', 1);";
+                        $conn->exec($send);
+                        }  
+                }
+                else{
+                    if(isset($_GET["submit"])){
+                        ?>
+                        <h1>Vous avez déjà postulé a cette offre</h1>
+                        <?php
+                    }
+                }
+                ?>
+                </div>
+                <?php
+                    
+
                       $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
           </main>
 
+
+
+
+
+
 <!------------------------------------------------------------------------------------------------------------------------->
 
-        <footer class="text-center text-lg-start">
+<footer class="text-center text-lg-start">
           <div class="container p-4">
             <div class="row">
               <div class="col-lg-4 col-md-6 col-sm-12">
