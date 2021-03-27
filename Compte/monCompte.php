@@ -27,9 +27,9 @@ if(isset($_POST['Login'])){
             if($donneesLogin['mdp']== $_POST['motDePasse']){
                 $MDPCheck = true;
                 $IDFonction = $donneesLogin['ID_fonction'];
-                setcookie('Login', $_POST['Login'],time()+30,'/');
-                setcookie('ID_utilisateur',$donneesLogin['ID_utilisateur'],time()+30,'/');
-                setcookie('Fonction',$IDFonction,time()+30,'/');
+                setcookie('Login', $_POST['Login'],time()+300,'/');
+                setcookie('ID_utilisateur',$donneesLogin['ID_utilisateur'],time()+300,'/');
+                setcookie('Fonction',$IDFonction,time()+300,'/');
             }
         }
     }
@@ -99,17 +99,27 @@ if(isset($_POST['Login'])){
 
 
                   <?php if(isset($_COOKIE['Login']) && (isset($_COOKIE['Fonction']) || $IDFonction !== null)){ 
-                    echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-                    if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3 || $IDFonction ==1 || $IDFonction==3){?>
-                    <?php echo "bbbbbbbbbbbbbbbbbbbbbbbb"; ?>
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre administration
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./créationCompte.php">Créer un nouveau compte</a></li>
-                        </ul>
-                      </li>
-                    <?php
+                    if(isset($_COOKIE['Fonction'])){
+                        if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){?>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre administration
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                            <li><a href="./créationCompte.php">Créer un nouveau compte</a></li>
+                            </ul>
+                        </li>
+                        <?php
+                        }
+                    }
+                    elseif($IDFonction ==1 || $IDFonction==3){?>
+                        <li class="dropdown">
+                          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre administration
+                          <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="./créationCompte.php">Créer un nouveau compte</a></li>
+                          </ul>
+                        </li>
+                      <?php
                     }
                   }
                 ?>
