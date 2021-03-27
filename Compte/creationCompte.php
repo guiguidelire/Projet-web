@@ -13,61 +13,77 @@
                 color: red;
             }
         </style>
+        <?php include '../Assets/POO.php' ; ?>
         
     </head>
     <body>
     <header>
-            <nav class="navbar navbar-inverse navbar-fixed-top"> 
-                <div class="container-fluid">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../index.php">CESI Stage</a>
-                  </div>
-                  <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                      
-                      <li><a href="../index.php">Accueil</a></li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
-                          <li><a href="./OffresDeStage/création.php">Création</a></li>
-                        </ul>
-                      </li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
-                          <li><a href="./Entreprises/gerer.php">Gerer</a></li>
-                        </ul>
-                      </li>
-                      
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./Compte/monCompte.php">Mon Compte</a></li>
-                          <?php 
-                            if(isset($_COOKIE['Login'])){ ?>
-                              <li><a href="./Compte/deconnexion.php">Deconnexion</a></li>
-                              <?php
-                            }
-                          ?>
-                        </ul>
-                      </li>
+        <nav class="navbar navbar-inverse navbar-fixed-top"> 
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.php">CESI Stage</a>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  <li><a href="../index.php">Accueil</a></li>
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
+                      <li><a href="./OffresDeStage/création.php">Création</a></li>
                     </ul>
-                  </div>
-                </div>
-              </nav>
+                  </li>
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
+                      <li><a href="./Entreprises/gerer.php">Gerer</a></li>
+                    </ul>
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./monCompte.php">Mon Compte</a></li>
+                      <?php 
+                        if(isset($_COOKIE['Login'])){ ?>
+                          <li style="background-color:#EE0000"><a href="./deconnexion.php">Deconnexion</a></li>
+                          <?php
+                        }
+                      ?>
+                    </ul>
+                  </li>
+
+
+                  <?php if(isset($_COOKIE['Login'])){ 
+                    if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){?>
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre création et Aministration
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="./CréationCompte.php">Créer un nouveau compte</a></li>
+                        </ul>
+                      </li>
+                    <?php
+                    }
+                  }
+                ?>
+                </ul>
+              </div>
+            </div>
+          </nav>
         </header>
 <!------------------------------------------------------------------------------------------------------------------------->
 
@@ -96,44 +112,29 @@
             $requeteCentre =" SELECT ID_centre, Nom_centre FROM centre;";
             $requeteRole =" SELECT ID_fonction, Fonction FROM `role`;";
             if(isset($_POST['selectCentre'])){
-                
-                $nom = strtoupper($_POST['Nom']);
-                $nomTableau = str_split($nom, $length = 1);
-                $Prenom = strtolower($_POST['Prenom']);
-                $PrenomTableau = str_split($Prenom, $length = 1);
-                $password = $PrenomTableau[0].$PrenomTableau[1].rand(10,99).strtoupper($nomTableau[0].$nomTableau[1]).rand(10,99).'&*';
-                $PrenomTableau[0] = strtoupper($PrenomTableau[0]);
-                $Prenom ="";
-                foreach($PrenomTableau as $lettre){
-                    $Prenom .= $lettre;
-                }
-                $Login = strtoupper($PrenomTableau[0]).$PrenomTableau[1].$PrenomTableau[2].$nom;
-                
-                $Promotion = $_POST['selectPromotion'];
-                $Centre = $_POST['selectCentre'];
-                $Role = $_POST['selectRole'];
 
-                $requetePromotionID ="( SELECT ID_promotion FROM promotion WHERE Promotion LIKE '$Promotion')";
-                $requeteCentreID ="( SELECT ID_centre FROM centre WHERE Nom_centre LIKE '$Centre')";
-                $requeteRoleID =" (SELECT ID_fonction FROM `role` WHERE Fonction LIKE '$Role')";
-
-                
-                $requete = "INSERT INTO utilisateur(Nom, Prenom, `Login`,mdp, ID_centre, ID_fonction, ID_promotion) 
-                                        VALUES('$nom','$Prenom','$Login','$password',$requeteCentreID,$requeteRoleID,$requetePromotionID);";
-                $conn->exec($requete);
-                
+                //POO creation de l'utilisateur
+                $user = new utilisateur($_POST['Nom'],$_POST['Prenom'],$_POST['selectPromotion'],$_POST['selectCentre'],$_POST['selectRole']);
+                //POO Insertion de l'utilisateur dans la bdd
+                $user -> _InsertUtilisateur($conn);
+                //POO Recupration de son nom et son prenom
+                $Prenom = $user->_getPrenom();
+                $Nom = $user->_getNom();
             }      
             ?>
-            
+<!--Formulaire pour la creation d'un utilisateur---------------------------------------------------------------------
+--------------------Affichage de l'utilisateur créé----------------------------------------------------------------->
                 <form class="form-horizontal" action="./creationCompte.php" method="post">
                     <?php if(isset($_POST['selectCentre'])){ ?>
                     <div class="row">
                         <div class="col-sm-12">
-                            <p><?php echo "Utilisateur <strong> $Prenom $nom </strong> créé ! Cet utlisateur est au centre de <strong> $Centre</strong> dans la promotion <strong> $Promotion</strong> en tant que <strong>$Role </strong>!"?></p>
+                            <p><?php 
+                            echo "Utilisateur <strong> $Prenom $Nom </strong> créé ! "?></p>
                         </div>
                     </div>
                     <?php } ?>
                     <br>
+<!---------Nom de l'utilisateur------------------------------------------------------------------------------------------------>
                     <div class="row">
                         <div class="form-group ">
                             <label class="control-label col-sm-2 col-sm-offset-3" for="Nom">Nom :</label>
@@ -142,7 +143,7 @@
                             </div>
                         </div>
                     </div>
-                    
+<!-----------Prenom de l'utilisateur------------------------------------------------------------------------------------------->
                     <div class="row">
                         <div class="form-group ">
                             <label class="control-label col-sm-2 col-sm-offset-3" for="Prenom">Prénom :</label>
@@ -151,6 +152,7 @@
                             </div>
                         </div>
                     </div><br>
+<!----------Promotion de l'utilisateur en select recuperer de la bdd----------------------------------------------------------->
                     <div class="row">
                         <div class="form-group ">
                             <label class="control-label col-sm-2 col-sm-offset-3" for="selectPromotion">Promotion :</label>
@@ -169,6 +171,7 @@
                             </div>
                         </div>
                     </div>
+<!------Centre de l'utilisateur en select recuperer de la bdd------------------------------------------------------------------>
                     <div class="row">
                         <div class="form-group ">
                             <label class="control-label col-sm-2 col-sm-offset-3" for="selectCentre">Centre :</label>
@@ -186,6 +189,7 @@
                             </div>
                         </div>
                     </div>
+<!-----Fonction de l'utilisateur en select recuperer de la bdd------------------------------------------------------------------>
                     <div class="row">
                         <div class="form-group ">
                             <label class="control-label col-sm-2 col-sm-offset-3" for="selectRole">Role :</label>
@@ -203,24 +207,18 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="form-group">
-                        <div class="row">
+<!-------Submit et reset-------------------------------------------------------------------------------------------------------->
+                    <div class="row">
+                        <div class="form-group">
                             <div class=" col-lg-1 col-md-1 col-sm-offset-5 col-sm-1">
-                                <button type="submit" class="btn btn-default">Créer</button>
+                                <button type="submit">Créer</button>
                             </div>
                             <div class="col-lg-1 col-md-1 col-sm-1 ">
-                                <button type="reset" class="btn btn-default">Réinitialiser</button>
+                                <button type="reset">Réinitialiser</button>
                             </div>
                         </div>
                     </div>
                 </form>
-            <?php
-            
-            
-            
-                    
-            ?>
             </div>
           </main>
 <!------------------------------------------------------------------------------------------------------------------------->

@@ -12,57 +12,72 @@
     </head>
     <body>
     <header>
-            <nav class="navbar navbar-inverse navbar-fixed-top"> 
-                <div class="container-fluid">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../index.php">CESI Stage</a>
-                  </div>
-                  <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                      
-                      <li><a href="../index.php">Accueil</a></li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
-                          <li><a href="./OffresDeStage/création.php">Création</a></li>
-                        </ul>
-                      </li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
-                          <li><a href="./Entreprises/gerer.php">Gerer</a></li>
-                        </ul>
-                      </li>
-                      
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./Compte/monCompte.php">Mon Compte</a></li>
-                          <?php 
-                            if(isset($_COOKIE['Login'])){ ?>
-                              <li><a href="./Compte/deconnexion.php">Deconnexion</a></li>
-                              <?php
-                            }
-                          ?>
-                        </ul>
-                      </li>
+        <nav class="navbar navbar-inverse navbar-fixed-top"> 
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.php">CESI Stage</a>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  <li><a href="../index.php">Accueil</a></li>
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
+                      <li><a href="./OffresDeStage/création.php">Création</a></li>
                     </ul>
-                  </div>
-                </div>
-              </nav>
+                  </li>
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
+                      <li><a href="./Entreprises/gerer.php">Gerer</a></li>
+                    </ul>
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./monCompte.php">Mon Compte</a></li>
+                      <?php 
+                        if(isset($_COOKIE['Login'])){ ?>
+                          <li style="background-color:#EE0000"><a href="./deconnexion.php">Deconnexion</a></li>
+                          <?php
+                        }
+                      ?>
+                    </ul>
+                  </li>
+
+
+                  <?php if(isset($_COOKIE['Login'])){ 
+                    if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){?>
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre création et Aministration
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="./CréationCompte.php">Créer un nouveau compte</a></li>
+                        </ul>
+                      </li>
+                    <?php
+                    }
+                  }
+                ?>
+                </ul>
+              </div>
+            </div>
+          </nav>
         </header>
 <!------------------------------------------------------------------------------------------------------------------------->
 
@@ -85,8 +100,11 @@
                 echo "Erreur : " . $e->getMessage() . "<br>";
             }
 
-            unset($_COOKIE['Login']);
-            unset($_COOKIE['ID_utilisateur']);
+
+            setcookie('Login', '', 1,"/");
+            setcookie('ID_utilisateur', '', 1,"/");
+            setcookie('Fonction', '', 1,"/");
+
                     
             ?>
             <div class="container">

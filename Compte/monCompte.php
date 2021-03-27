@@ -1,3 +1,40 @@
+<?php
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+try{
+  $conn = new PDO("mysql:host=$servername;dbname=bdd_cesi_stage", $username, $password);
+  //On définit le mode d'erreur de PDO sur Exception
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  //echo 'Connexion réussie <br> <br>';
+}
+
+//On capture les exceptions si une exception est lancée et on affiche
+//les informations relatives à celle-ci
+catch(PDOException $e){
+  echo "Erreur : " . $e->getMessage() . "<br>";
+}
+if(isset($_POST['Login'])){
+    $LoginCheck = false;
+    $MDPCheck = false;
+    $requeteLogin =" SELECT ID_utilisateur,`Login`, mdp, ID_fonction 
+                FROM utilisateur;";
+    $reponseLogin = $conn->query($requeteLogin);
+    
+    while($donneesLogin = $reponseLogin->fetch()){
+        if($donneesLogin['Login']== $_POST['Login']){
+            $LoginCheck = true;
+            if($donneesLogin['mdp']== $_POST['motDePasse']){
+                $MDPCheck = true;
+                $IDFonction = $donneesLogin['ID_fonction'];
+                setcookie('Login', $_POST['Login'],time()+30,'/');
+                setcookie('ID_utilisateur',$donneesLogin['ID_utilisateur'],time()+30,'/');
+                setcookie('Fonction',$IDFonction,time()+30,'/');
+            }
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,83 +48,79 @@
         
     </head>
     <body>
-    <header>
-            <nav class="navbar navbar-inverse navbar-fixed-top"> 
-                <div class="container-fluid">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../index.php">CESI Stage</a>
-                  </div>
-                  <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                      
-                      <li><a href="../index.php">Accueil</a></li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
-                          <li><a href="./OffresDeStage/création.php">Création</a></li>
-                        </ul>
-                      </li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
-                          <li><a href="./Entreprises/gerer.php">Gerer</a></li>
-                        </ul>
-                      </li>
-                      
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./Compte/monCompte.php">Mon Compte</a></li>
-                          <?php 
-                            if(isset($_COOKIE['Login'])){ ?>
-                              <li><a href="./Compte/deconnexion.php">Deconnexion</a></li>
-                              <?php
-                            }
-                          ?>
-                        </ul>
-                      </li>
+      <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top"> 
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.php">CESI Stage</a>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  <li><a href="../index.php">Accueil</a></li>
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./OffresDeStage/rechercheOffre.php">Rechercher</a></li>
+                      <li><a href="./OffresDeStage/création.php">Création</a></li>
                     </ul>
-                  </div>
-                </div>
-              </nav>
+                  </li>
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./Entreprises/rechercher.php">Rechercher</a></li>
+                      <li><a href="./Entreprises/gerer.php">Gerer</a></li>
+                    </ul>
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="./monCompte.php">Mon Compte</a></li>
+                      <?php 
+                        if(isset($_COOKIE['Login']) || isset($_POST['Login'])){ ?>
+                          <li style="background-color:#EE0000"><a href="./deconnexion.php">Deconnexion</a></li>
+                          <?php
+                        }
+                      ?>
+                    </ul>
+                  </li>
+
+
+                  <?php if(isset($_COOKIE['Login']) && (isset($_COOKIE['Fonction']) || $IDFonction !== null)){ 
+                    echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                    if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3 || $IDFonction ==1 || $IDFonction==3){?>
+                    <?php echo "bbbbbbbbbbbbbbbbbbbbbbbb"; ?>
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre administration
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="./créationCompte.php">Créer un nouveau compte</a></li>
+                        </ul>
+                      </li>
+                    <?php
+                    }
+                  }
+                ?>
+                </ul>
+              </div>
+            </div>
+          </nav>
         </header>
 <!------------------------------------------------------------------------------------------------------------------------->
 
         <main>
-            <?php
-            $servername = 'localhost';
-            $username = 'root';
-            $password = '';
-            
-            try{
-                $conn = new PDO("mysql:host=$servername;dbname=bdd_cesi_stage", $username, $password);
-                //On définit le mode d'erreur de PDO sur Exception
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                //echo 'Connexion réussie <br> <br>';
-            }
-
-            //On capture les exceptions si une exception est lancée et on affiche
-            //les informations relatives à celle-ci
-            catch(PDOException $e){
-                echo "Erreur : " . $e->getMessage() . "<br>";
-            }
-
-            
-                    
-            ?>
             <div class="container">
                 <?php 
                 
@@ -96,33 +129,17 @@
                             <p> Vous etes deja connecté ! </p>
                         </div>";
                 }else if(isset($_POST['Login'])){
-                    $LoginCheck = false;
-                    $MDPCheck = false;
-                    $requeteLogin =" SELECT ID_utilisateur,`Login`, mdp 
-                                FROM utilisateur;";
-                    $reponseLogin = $conn->query($requeteLogin);
-                    
-                    while($donneesLogin = $reponseLogin->fetch()){
-                        if($donneesLogin['Login']== $_POST['Login']){
-                            $LoginCheck = true;
-                            if($donneesLogin['mdp']== $_POST['motDePasse']){
-                                $MDPCheck = true;
-                                setcookie('Login', $_POST['Login'],time()+60*30);
-                                setcookie('ID_utilisateur',$donneesLogin['ID_utilisateur'],time()+60*30);
-                                echo "<div class='row'> 
-                                        <p> Felecitation vous voila connecté ! </p>
-                                    </div>";
-                            }
-                        }
-                    }
                     if(!$MDPCheck){
                         if(!$LoginCheck){
                             echo "<p> Le Login n'est pas valide ! </p>";
                         }else{
                             echo "<p> Le mot de passe n'est pas valide ! </p>";
                         }
+                    }else if($MDPCheck && $LoginCheck){
+                        echo "<div class='row'> 
+                          <p> Felecitation vous voila connecté ! </p>
+                        </div>";
                     }
-                    
                 }else{ ?>
                     <form class="form-horizontal" action="./monCompte.php" method="post">
                         <br>
@@ -134,7 +151,6 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
                         <div class="row">
                             <div class="form-group ">
                                 <label class="control-label col-sm-2 col-sm-offset-3" for="motDePasse">Password :</label>
@@ -145,8 +161,8 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class=" col-lg-1 col-md-1 col-sm-offset-3 col-sm-1">
-                                    <button type="submit" class="btn btn-default">Connexion</button>
+                                <div class=" col-lg-1 col-md-1 col-sm-offset-5 col-sm-1">
+                                    <button type="submit">Connexion</button>
                                 </div>
                             </div>
                         </div>
