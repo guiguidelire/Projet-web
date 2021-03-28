@@ -1,65 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>CESI STAGE</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <link href="./Assets/Styles/style.css" rel="stylesheet">
-        
-    </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-inverse navbar-fixed-top"> 
-                <div class="container-fluid">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">CESI Stage</a>
-                  </div>
-                  <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                      
-                      <li class="active"><a href="#">Accueil</a></li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="./rechercheOffre.php">Rechercher</a></li>
-                          <li><a href="#">Création</a></li>
-                        </ul>
-                      </li>
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">Rechercher</a></li>
-                          <li><a href="#">Gerer</a></li>
-                          <li><a href="#">Evalution</a></li>
-                        </ul>
-                      </li>
-                      
-                      
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compte
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">Mon Compte</a></li>
-                          <li><a href="#">Deconnexion</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </nav>
-        </header>
+<?php 
+$page = "accueil";
+require("../Nav/header.php");
+?>
+
 <!------------------------------------------------------------------------------------------------------------------------->
 
         <main>
@@ -96,7 +39,7 @@
               <div class="carousel-inner">
           
                 <?php 
-                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences, offres_stages.ID_offre, entreprise.Ville  FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
                 INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
                 INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
@@ -106,17 +49,18 @@
                 $reponseALaUne = $conn->query($requeteALaUne);
                 while($donneesALaUne = $reponseALaUne->fetch()){?>
                   <div class="item active">
-                    <img src="./Assets/Pictures/WEBALaUne.jpg" alt="1ere offre à la une" style="width:100%;">
+                    <img src="../Assets/Pictures/WEBALaUne.jpg" alt="1ere offre à la une" class="w-100 h-100">
                     <div class="carousel-caption">
                       <h3><?php echo $donneesALaUne['Nom']; ?></h3>
                       <p><?php echo $donneesALaUne['Competences']; ?></p>
                       <p><?php echo $donneesALaUne['Description']; ?></p>
+                      <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donneesALaUne['Nom'];?>&searchLocalisation=<?php echo $donneesALaUne['Ville'];?>&ID_offre=<?php echo $donneesALaUne['ID_offre'];?>"><button>En savoir plus</button></a>
                     </div>
                   </div>
                 <?php } ?>
 
                 <?php 
-                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences, offres_stages.ID_offre, entreprise.Ville  FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
                 INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
                 INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
@@ -126,17 +70,18 @@
                 $reponseALaUne = $conn->query($requeteALaUne);
                 while($donneesALaUne = $reponseALaUne->fetch()){?>
                   <div class="item">
-                    <img src="./Assets/Pictures/RESEAUalaune.jpg" alt="2e offre à la une" style="width:100%;">
+                    <img src="../Assets/Pictures/RESEAUalaune.jpg" alt="2e offre à la une" class="w-100 h-100">
                     <div class="carousel-caption">
                       <h3><?php echo $donneesALaUne['Nom']; ?></h3>
                       <p><?php echo $donneesALaUne['Competences']; ?></p>
                       <p><?php echo $donneesALaUne['Description']; ?></p>
+                      <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donneesALaUne['Nom'];?>&searchLocalisation=<?php echo $donneesALaUne['Ville'];?>&ID_offre=<?php echo $donneesALaUne['ID_offre'];?>"><button>En savoir plus</button></a>
                     </div>
                   </div>
                 <?php } ?>
               
                 <?php 
-                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences FROM offres_stages 
+                $requeteALaUne =" SELECT offres_stages.ID_offre, entreprise.Nom, offres_stages.Description, competences.Competences, offres_stages.ID_offre, entreprise.Ville  FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise
                 INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
                 INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
@@ -146,11 +91,12 @@
                 $reponseALaUne = $conn->query($requeteALaUne);
                 while($donneesALaUne = $reponseALaUne->fetch()){?>
                   <div class="item">
-                    <img src="./Assets/Pictures/Calaune.jpg" alt="2e offre à la une" style="width:100%;">
+                    <img src="../Assets/Pictures/Calaune.jpg" alt="2e offre à la une" class="w-100 h-100">
                     <div class="carousel-caption">
                       <h3><?php echo $donneesALaUne['Nom']; ?></h3>
                       <p><?php echo $donneesALaUne['Competences']; ?></p>
                       <p><?php echo $donneesALaUne['Description']; ?></p>
+                      <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donneesALaUne['Nom'];?>&searchLocalisation=<?php echo $donneesALaUne['Ville'];?>&ID_offre=<?php echo $donneesALaUne['ID_offre'];?>"><button>En savoir plus</button></a>
                     </div>
                   </div>
                 <?php } ?>
@@ -174,57 +120,28 @@
             <div class="Nouveauté">
               <?php
                 
-                $requete =" SELECT entreprise.Nom, offres_stages.Description 
+                $requete =" SELECT entreprise.Nom, offres_stages.Description, entreprise.Ville, offres_stages.ID_offre 
                             FROM offres_stages INNER JOIN entreprise 
                             ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
                             ORDER BY ID_offre 
                             DESC LIMIT 6";
                 $reponse = $conn->query($requete);
                 
+              ?>
+              <div class="row">
+                <?php while($donnees = $reponse->fetch()){?>
+                  <div class="col-lg-4 col-md-6 col-sm-12" >
+                    <h3>Stage chez <?php echo $donnees['Nom'];?></h3>
+                    <p><?php echo $donnees['Description'];?><p>
+                    <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_offre=<?php echo $donnees['ID_offre'];?>"><button>En savoir plus</button></a>
+                  </div>
+                <?php
+                  }
+                  $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
-                <div class="row">
-                  
-                    <?php while($donnees = $reponse->fetch()){?>
-                      <div class="col-lg-4 col-md-6 col-sm-12" >
-                        <h3>Stage chez <?php echo $donnees['Nom'];?></h3>
-                        <p><?php echo $donnees['Description'];?><p>
-                        <button>En savoir plus</button>
-                      </div>
-                    <?php
-                    }
-                    $reponse->closeCursor(); // Termine le traitement de la requête
-                    ?>
-                </div>
+              </div>
             </div>
           </main>
 <!------------------------------------------------------------------------------------------------------------------------->
-        <footer class="text-center text-lg-start">
-          <div class="container p-4">
-            <div class="row">
-              <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Footer Content</h5>
 
-                <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-                  molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
-                  voluptatem veniam, est atque cumque eum delectus sint!
-                </p>
-              </div>
-
-              <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Links</h5>
-
-                <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="https://wayf.cesi.fr/login" class="text-dark">Ent CESI</a>
-                  </li>
-                  <li>
-                    <a href="https://www.cesi.fr/" class="text-dark">CESI.fr</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
-    </body>
-</html>
+<?php require("../Nav/footer.php"); ?>
