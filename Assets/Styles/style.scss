@@ -32,23 +32,25 @@ body{
 main{
     margin-top: 50px;
     min-height: 100%;
-    .col-lg-4, .col-md-6, .col-sm-12{
+    .col-lg-4, .col-md-6, .col-sm-12, .container{
         background-color: $bgColor;
         text-align: center;
         color: white;
         padding: 10px 50px;
         background-clip: content-box;
-        button{
-            background-color: red;
-            border-style: none;
-            padding : 10px;
-            color: white;
-        }
-        button:hover{
-            color: black;
-            background-color: white;
-        }
     }
+    button{
+        background-color: red;
+        border-style: none;
+        padding : 10px;
+        color: white;
+        border-radius: 5px;
+    }
+    button:hover{
+        color: black;
+        background-color: white;
+    }
+
 }
 footer{
     background-color: $bgColor;
