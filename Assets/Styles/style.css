@@ -35,7 +35,7 @@ main {
   min-height: 100%;
 }
 
-main .col-lg-4, main .col-md-6, main .col-sm-12 {
+main .col-lg-4, main .col-md-6, main .col-sm-12, main .container {
   background-color: #222222;
   text-align: center;
   color: white;
@@ -43,14 +43,15 @@ main .col-lg-4, main .col-md-6, main .col-sm-12 {
   background-clip: content-box;
 }
 
-main .col-lg-4 button, main .col-md-6 button, main .col-sm-12 button {
+main button {
   background-color: red;
   border-style: none;
   padding: 10px;
   color: white;
+  border-radius: 5px;
 }
 
-main .col-lg-4 button:hover, main .col-md-6 button:hover, main .col-sm-12 button:hover {
+main button:hover {
   color: black;
   background-color: white;
 }
