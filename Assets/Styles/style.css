@@ -25,6 +25,7 @@ body {
   margin-top: 0;
   text-align: center;
 }
+
 .Titre_Nouveauté h3 {
   font-size: 30px;
 }
@@ -33,6 +34,7 @@ main {
   margin-top: 50px;
   min-height: 100%;
 }
+
 main .col-lg-4, main .col-md-6, main .col-sm-12, main .container {
   background-color: #222222;
   text-align: center;
@@ -40,6 +42,7 @@ main .col-lg-4, main .col-md-6, main .col-sm-12, main .container {
   padding: 10px 50px;
   background-clip: content-box;
 }
+
 main button {
   background-color: red;
   border-style: none;
@@ -47,6 +50,7 @@ main button {
   color: white;
   border-radius: 5px;
 }
+
 main button:hover {
   color: black;
   background-color: white;
@@ -65,6 +69,7 @@ footer {
   padding-bottom: 10px;
   background-color: #222222;
 }
+
 .form-horizontal label {
   color: white;
 }
@@ -73,6 +78,7 @@ footer {
   height: 50rem;
   background-color: #000;
 }
+
 .item img {
   width: 100%;
 }
@@ -85,11 +91,11 @@ footer {
   .item img {
     width: 100%;
   }
-
   .carousel-caption {
     margin-bottom: 3rem;
   }
 }
+
 @media only screen and (max-width: 990px) {
   .item {
     height: 25rem;
@@ -98,8 +104,8 @@ footer {
   .item img {
     width: 100%;
   }
-
   .carousel-caption {
     margin-bottom: 2rem;
   }
-}/*# sourceMappingURL=style.css.map */
+}
+/*# sourceMappingURL=style.css.map */
