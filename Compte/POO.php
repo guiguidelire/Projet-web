@@ -52,7 +52,7 @@ class utilisateur{
         $this->_Login = $Login;
     }
     public function _setPassword($Password){
-        $this->_Password = $Password;
+        $this->_password = $Password;
     }
     public function _setIDCentre($IDCentre){
         $this->_IDCentre = $IDCentre;
@@ -90,7 +90,7 @@ class utilisateur{
         $nom = $this->_Nom;
         $Prenom = $this->_Prenom;
         $Login = $this->_Login;
-        $password = $this->_Password;
+        $password = crypt($this->_password, 'rl');
         $centre = $this->_Centre;
         $Fonction = $this->_Fonction;
         $Promotion = $this->_Promotion;
@@ -119,6 +119,7 @@ class utilisateur{
         $Password = $PrenomTableau[0].$PrenomTableau[1].rand(10,99).strtoupper($nomTableau[0].$nomTableau[1]).rand(10,99).'&*';
         self::_setPassword($Password);
     }
+
     public function _TransformPrenom($Prenom){
         $Prenom = strtolower($Prenom);
         $PrenomTableau = str_split($Prenom, $length = 1);

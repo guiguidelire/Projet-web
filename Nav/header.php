@@ -20,19 +20,12 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../Accueil/index.php">CESI Stage</a>
+                    <a class="navbar-brand" href="../index.php">CESI Stage</a>
                   </div>
                   <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
-                      <?php if($page == "accueil"){?>
-                        <li class="active"><a href="../Accueil/index.php">Accueil</a></li>
-                      <?php
-                      }
-                      else{?>
-                        <li><a href="../Accueil/index.php">Accueil</a></li>
-                      <?php
-                      } ?>
-                      
+                      <li><a href="../index.php">Accueil</a></li>
+
                       <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offres de stage
                         <span class="caret"></span></a>
@@ -44,17 +37,25 @@
                           else{?>
                             <li><a href="../OffresDeStage/rechercheOffre.php">Rechercher</a></li>
                           <?php
-                          } ?>
-                          <?php if($page == "creationoffre"){?>
-                            <li class="active"><a href="../OffresDeStage/création.php">Création</a></li>
-                          <?php
-                          }
-                          else{?>
-                            <li><a href="../OffresDeStage/création.php">Création</a></li>
-                          <?php
-                          } ?>
+                          } 
+                          
+                          if(isset($_COOKIE['Login']) && (isset($_COOKIE['Fonction']))){ 
+                            if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){
+                              if($page == "creationoffre"){?>
+                                <li class="active"><a href="../OffresDeStage/création.php">Création</a></li>
+                              <?php
+                              }
+                              else{?>
+                                <li><a href="../OffresDeStage/création.php">Création</a></li>
+                              <?php
+                              } 
+                            }
+                          }                             
+                          ?>
                         </ul>
                       </li>
+
+
                       
                       <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entreprise
@@ -67,15 +68,21 @@
                           else{?>
                             <li><a href="../Entreprises/rechercher.php">Rechercher</a></li>
                           <?php
-                          } ?>
-                          <?php if($page == "gererentreprise"){?>
-                            <li class="active"><a href="../Entreprises/gerer.php">Gerer</a></li>
-                          <?php
                           }
-                          else{?>
-                            <li><a href="../Entreprises/gerer.php">Gerer</a></li>
-                          <?php
-                          } ?>
+
+                          if(isset($_COOKIE['Login']) && (isset($_COOKIE['Fonction']))){ 
+                            if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){
+                              if($page == "gererentreprise"){?>
+                                <li class="active"><a href="../Entreprises/gerer.php">Création</a></li>
+                              <?php
+                              }
+                              else{?>
+                                <li><a href="../Entreprises/gerer.php">Gerer</a></li>
+                              <?php
+                              } 
+                            }
+                          }
+                          ?>
                         </ul>
                       </li>
                       
@@ -107,31 +114,31 @@
                         </ul>
                       </li>
 
-                      <?php if(isset($_COOKIE['Login']) && (isset($_COOKIE['Fonction']) || $IDFonction !== null)){ 
-                        if(isset($_COOKIE['Fonction'])){
-                            if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){?>
-                              <li class="dropdown">
-                              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre administration
-                              <span class="caret"></span></a>
-                              <ul class="dropdown-menu">
-                              <li><a href="../Compte/creationCompte.php">Créer un nouveau compte</a></li>
-                              </ul>
-                              </li>
+                      <?php 
+                      if(isset($_COOKIE['Login']) && (isset($_COOKIE['Fonction']))){ 
+                        if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){?>
+                          <li class="dropdown">
+                          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre administration
+                          <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                          <?php
+                          if($page == "creationutilisateur"){?>
+                            <li class="active"><a href="../Compte/creationCompte.php">Créer un nouveau compte</a></li>
                             <?php
                             }
-                        }
-                        elseif($IDFonction ==1 || $IDFonction==3){?>
-                            <li class="dropdown">
-                              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Autre administration
-                              <span class="caret"></span></a>
-                              <ul class="dropdown-menu">
-                                <li><a href="../Compte/creationCompte.php">Créer un nouveau compte</a></li>
-                              </ul>
-                            </li>
-                          <?php
+                            else{?>
+                              <li><a href="../Compte/creationCompte.php">Créer un nouveau compte</a></li>
+                            <?php
+                            }
+                            ?>
+                          </ul>
+                          </li>
+                        <?php
                         }
                       } ?>
                     </li>
+
+
 
                   </ul>
                 </div>

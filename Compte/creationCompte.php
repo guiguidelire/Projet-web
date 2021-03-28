@@ -1,4 +1,7 @@
 <?php 
+require("../Assets/ConnexionBDD.php");
+//$conn : connexion bdd  
+require("./POO.php");
 $page = "creationutilisateur";
 require("../Nav/header.php");
 ?>
@@ -6,24 +9,6 @@ require("../Nav/header.php");
 <!------------------------------------------------------------------------------------------------------------------------->
 
         <main>
-            <?php
-            $servername = 'localhost';
-            $username = 'root';
-            $password = '';
-            
-            try{
-                $conn = new PDO("mysql:host=$servername;dbname=bdd_cesi_stage", $username, $password);
-                //On définit le mode d'erreur de PDO sur Exception
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                //echo 'Connexion réussie <br> <br>';
-            }
-
-            //On capture les exceptions si une exception est lancée et on affiche
-            //les informations relatives à celle-ci
-            catch(PDOException $e){
-                echo "Erreur : " . $e->getMessage() . "<br>";
-            }
-            ?>
             <div class="container">
             <?php
             $requetePromotion =" SELECT ID_promotion,Promotion FROM promotion ORDER BY Promotion;";
@@ -38,6 +23,8 @@ require("../Nav/header.php");
                 //POO Recupration de son nom et son prenom
                 $Prenom = $user->_getPrenom();
                 $Nom = $user->_getNom();
+                $mdp = $user->_getPassword();
+                $login = $user->_getLogin();
             }      
             ?>
 <!--Formulaire pour la creation d'un utilisateur---------------------------------------------------------------------
@@ -47,7 +34,9 @@ require("../Nav/header.php");
                     <div class="row">
                         <div class="col-sm-12">
                             <p><?php 
-                            echo "Utilisateur <strong> $Prenom $Nom </strong> créé ! "?></p>
+                            echo "Utilisateur<strong> $Prenom $Nom </strong>créé !"?></p>
+                            <p><?php 
+                            echo "Avec le login :<strong> $login </strong> et le mot de passe :<strong> $mdp </strong>"?></p>
                         </div>
                     </div>
                     <?php } ?>

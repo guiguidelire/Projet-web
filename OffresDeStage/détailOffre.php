@@ -7,23 +7,7 @@ require("../Nav/header.php");
 
         <main>
             <?php
-            $servername = 'localhost';
-            $username = 'root';
-            $password = '';
-            
-            try{
-                $conn = new PDO("mysql:host=$servername;dbname=bdd_cesi_stage", $username, $password);
-                //On définit le mode d'erreur de PDO sur Exception
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                //echo 'Connexion réussie <br> <br>';
-            }
-
-            //On capture les exceptions si une exception est lancée et on affiche
-            //les informations relatives à celle-ci
-            catch(PDOException $e){
-                echo "Erreur : " . $e->getMessage() . "<br>";
-            }
-                    
+            require("../Assets/ConnexionBDD.php");     
             ?>
             <div class="row">
                 <?php 
@@ -99,9 +83,55 @@ require("../Nav/header.php");
                         ?>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                      <div class="col-lg-12 col-md-12 col-sm-12">
+                    <?php
+                    if(!isset($_COOKIE['ID_utilisateur'])){?>
+                         <h3>Veuillez vous connecter pour postuler a cette offre</h3>
+                       <?php
+                    }
+                    else{?>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
                         <a href="../OffresDeStage/postuler.php?ID_offre=<?php echo $ID_offre;?>"><button class="btn btn-default">Postuler</button></a>
-                      </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                        <a href="../OffresDeStage/détailOffre.php?wishlist=true&ID_offre=<?php echo $ID_offre;?>"><button class="btn btn-default">Ajouté à la liste de souhait</button></a>
+                        </div>
+                        
+                        <?php    
+                        $ID_utilisateur = $_COOKIE['ID_utilisateur'];
+                        $requete = "SELECT * FROM offres_stages
+                        INNER JOIN wish_list ON offres_stages.ID_offre = wish_list.ID_offre 
+                        WHERE offres_stages.ID_offre = $ID_offre";
+                        $reponse = $conn->query($requete);
+                        $postul = false;
+                        while($donnees = $reponse->fetch()){
+                            if($ID_utilisateur == $donnees['ID_utilisateur']){
+                                $postul = true;
+                                break;
+                            }
+                            else{
+                                $postul = false;
+                            }
+                        }
+                        
+                        if($postul == false){
+                            if(isset($_GET['wishlist'])){
+                                ?>
+                                <h1>Cette offre à bien été ajouté a votre liste</h1>
+                                <?php
+                                $send = "INSERT INTO wish_list(`ID_offre`, `ID_utilisateur`) 
+                                VALUES($ID_offre, $ID_utilisateur);";
+                                $conn->exec($send);
+                            }
+                        }
+                        else{
+                            if(isset($_GET['wishlist'])){
+                                ?>
+                                <h1>Cette offre est déjà dans votre liste</h1>
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
                     </div>
                     <?php
                 }
