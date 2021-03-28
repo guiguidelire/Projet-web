@@ -1,6 +1,7 @@
 <?php 
 require("../Assets/ConnexionBDD.php");
 //$conn : connexion bdd  
+require("./POO.php");
 $page = "creationutilisateur";
 require("../Nav/header.php");
 ?>
@@ -22,6 +23,8 @@ require("../Nav/header.php");
                 //POO Recupration de son nom et son prenom
                 $Prenom = $user->_getPrenom();
                 $Nom = $user->_getNom();
+                $mdp = $user->_getPassword();
+                $login = $user->_getLogin();
             }      
             ?>
 <!--Formulaire pour la creation d'un utilisateur---------------------------------------------------------------------
@@ -31,7 +34,9 @@ require("../Nav/header.php");
                     <div class="row">
                         <div class="col-sm-12">
                             <p><?php 
-                            echo "Utilisateur <strong> $Prenom $Nom </strong> créé ! "?></p>
+                            echo "Utilisateur<strong> $Prenom $Nom </strong>créé !"?></p>
+                            <p><?php 
+                            echo "Avec le login :<strong> $login </strong> et le mot de passe :<strong> $mdp </strong>"?></p>
                         </div>
                     </div>
                     <?php } ?>
