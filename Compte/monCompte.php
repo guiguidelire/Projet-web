@@ -20,11 +20,9 @@ if(isset($_POST['Login'])){
         }
     }
 }
-?>
 
-<?php 
+
 $page = "moncompte";
-require("./POO.php");
 require("../Nav/header.php");
 ?>
 
@@ -34,15 +32,14 @@ require("../Nav/header.php");
             <?php            
             if(isset($_COOKIE['Login'])){
                 $ID_utilisateur = $_COOKIE['ID_utilisateur'];
-
                 ?>
                 <div class="container"> 
-                    <h1>information utilisateur</h1>
+                    <h1>Information utilisateur</h1>
                 <?php
                 $requete =" SELECT * FROM utilisateur    
                 INNER JOIN role ON utilisateur.ID_fonction = role.ID_fonction
                 INNER JOIN centre ON utilisateur.ID_centre = centre.ID_centre
-                INNER JOIN promotion ON utilisateur.ID_promotion = promotion.ID_promotion
+                LEFT JOIN promotion ON utilisateur.ID_promotion = promotion.ID_promotion
                 WHERE ID_utilisateur = $ID_utilisateur";                    
 
                 $reponse = $conn->query($requete);
@@ -51,62 +48,71 @@ require("../Nav/header.php");
                     <h4> <?php echo $donnees['Nom_centre'];?></h4>
                     <h4> <?php echo $donnees['Promotion'];?></h4>
                     <p><?php echo $donnees['Fonction'];?><p>
-                <?php
+                    <?php
+                    $idcentre = $donnees['ID_centre'];
+                    $idpromotion = $donnees['ID_promotion'];
                 }
                 ?>
-                </div>   
-
-                <div class="col-lg-12 col-md-12 col-sm-12"> 
-                    <h1 class="col-lg-12 col-md-12 col-sm-12">Liste de souhait</h1>
                 </div>
                 <?php
-                $requete =" SELECT entreprise.Nom, offres_stages.Description, entreprise.Ville, offres_stages.ID_offre
-                FROM offres_stages 
-                INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
-                INNER JOIN wish_list ON offres_stages.ID_offre = wish_list.ID_offre
-                WHERE wish_list.ID_utilisateur = $ID_utilisateur";                    
+                
+                if($_COOKIE['Fonction']==3){?>
+                    <div class="col-lg-12 col-md-12 col-sm-12"> 
+                        <h1 class="col-lg-12 col-md-12 col-sm-12">Information étudiants</h1>
+                    </div>
+                    <?php
+                    $requete =" SELECT * FROM utilisateur    
+                    INNER JOIN role ON utilisateur.ID_fonction = role.ID_fonction
+                    INNER JOIN centre ON utilisateur.ID_centre = centre.ID_centre
+                    INNER JOIN promotion ON utilisateur.ID_promotion = promotion.ID_promotion
+                    WHERE utilisateur.ID_centre = $idcentre AND utilisateur.ID_promotion = $idpromotion AND (utilisateur.ID_fonction = 4 OR utilisateur.ID_fonction = 2)";                    
 
-                $reponse = $conn->query($requete);
-                while($donnees = $reponse->fetch()){?>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <h3> <?php echo $donnees['Nom'];?></h3>
-                    <h4> <?php echo $donnees['Ville'];?></h4>
-                    <p><?php echo $donnees['Description'];?><p>
-                    <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_offre=<?php echo $donnees['ID_offre'];?>"><button>En savoir plus</button></a>
-                </div>
-                <?php
+                    $reponse = $conn->query($requete);
+                    while($donnees = $reponse->fetch()){?>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <h3> <?php echo $donnees['Nom'];?> <?php echo $donnees['Prenom'];?></h3>
+                        <h4> <?php echo $donnees['Nom_centre'];?></h4>
+                        <h4> <?php echo $donnees['Promotion'];?></h4>
+                        <p><?php echo $donnees['Fonction'];?><p>
+                        <a href="../Compte/detailUtilisateur.php?ID_utilisateur=<?php echo $donnees['ID_utilisateur']?>"><button>Plus d'information</button></a>
+                    </div>
+                    <?php
+                    }
                 }
-                ?>
-                <div class="col-lg-12 col-md-12 col-sm-12"> 
-                    <h1 class="col-lg-12 col-md-12 col-sm-12">Candidature</h1>
-                </div>
-                <?php
-                $requete =" SELECT entreprise.Nom, offres_stages.Description, entreprise.Ville, offres_stages.ID_offre
-                FROM offres_stages 
-                INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
-                INNER JOIN postuler ON offres_stages.ID_offre = postuler.ID_offre
-                WHERE postuler.ID_utilisateur = $ID_utilisateur";                    
-
-                $reponse = $conn->query($requete);
-                while($donnees = $reponse->fetch()){?>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <h3> <?php echo $donnees['Nom'];?></h3>
-                    <h4> <?php echo $donnees['Ville'];?></h4>
-                    <p><?php echo $donnees['Description'];?><p>
-                    <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_offre=<?php echo $donnees['ID_offre'];?>"><button>En savoir plus</button></a>
-                </div>
-                <?php 
+                else{?>          
+                    <meta http-equiv="refresh" content="0;URL=detailUtilisateur.php?ID_utilisateur=<?php echo $ID_utilisateur;?>">
+                    <?php
                 }
             }
             else if(isset($_POST['Login'])){
                 if(!$MDPCheck){
                     if(!$LoginCheck){
-                        ?><h2 class="col-lg-12 col-md-12 col-sm-12"> Le Login n'est pas valide ! </h2> <?php
+                        ?><div class="container">
+                        <h2 > Le Login n'est pas valide ! </h2> 
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <a href="../Compte/monCompte.php"><button>Mon compte</button></a>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <a href="../index.php"><button>Accueil</button></a>
+                        </div>
+                    </div><?php
+                        
                     }else{
-                        ?><h2 class="col-lg-12 col-md-12 col-sm-12"> Le mot de passe n'est pas valide ! </h2> <?php
+                        ?><div class="container">
+                        <h2 > Le mot de passe n'est pas valide ! </h2> 
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <a href="../Compte/monCompte.php"><button>Mon compte</button></a>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <a href="../index.php"><button>Accueil</button></a>
+                        </div>
+                    </div><?php
                     }
                 }else if($MDPCheck && $LoginCheck){
-                    ?><h2 class="col-lg-12 col-md-12 col-sm-12"> Felecitation vous voila connecté ! </h2> <?php
+                    ?>?><div class="container">
+                        <h2 > Felecitation vous voila connecté ! </h2> 
+                        <meta http-equiv="refresh" content="0;URL=monCompte.php">
+                    </div><?php
                 }
             }else{ ?>
             <div class="container">
