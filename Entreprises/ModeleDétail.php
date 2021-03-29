@@ -1,16 +1,44 @@
 <?php
-    function getBdd(){
-        $servername = 'localhost';
-        $username = 'root';
-        $password = '';
-        
+class detail{
+    private $_ServerName = 'localhost';
+    private $_DBName = 'bdd_cesi_stage';
+    private $_Username = 'root';
+    private $_Password = '';
+
+    private $_searchName;
+    private $_searchPlace;
+    private $_ID;
+
+//--Constructeur-------------------------------------------------------------------------------------------
+
+    public function __construct($SN, $SP,$ID){
+        $this->_setSearchName($SN);
+        $this->_setSearchPlace($SP);
+        $this->_setSearchID($ID);
+    }
+
+//--Accesseurs---------------------------------------------------------------------------------------------
+
+    public function _getSearchName(){return $this->_searchName;}
+    public function _getSearchPlace(){return $this->_searchPlace;}
+    public function _getSearchID(){return $this->_ID;}
+
+//--Mutateurs----------------------------------------------------------------------------------------------
+
+    public function _setSearchName($var){$this->_searchName = $var;}
+    public function _setSearchPlace($var){$this->_searchPlace = $var;}
+    public function _setSearchID($var){$this->_ID = $var;}
+
+//--Methode public-----------------------------------------------------------------------------------------
+
+    public function _getBdd(){
         try{
-            $conn = new PDO("mysql:host=$servername;dbname=bdd_cesi_stage", $username, $password);
+            $conn = new PDO("mysql:host=$this->_ServerName;dbname=$this->_DBName", $this->_Username, $this->_Password);
             //On définit le mode d'erreur de PDO sur Exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //echo 'Connexion réussie <br> <br>';
         }
-
+    
         //On capture les exceptions si une exception est lancée et on affiche
         //les informations relatives à celle-ci
         catch(PDOException $e){
@@ -19,7 +47,7 @@
         return $conn;
     }
 
-    function star($nb_star){
+    public function _star($nb_star){ 
         for ($i = 1; $i <= 5; $i++) {
             if($nb_star >= 1){?>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -44,19 +72,21 @@
         }
     }
 
-    function recherche($searchNom, $searchLocalisation){
+ 
+
+    public function _Recherche(){
         $requete = "SELECT * FROM entreprise 
                     INNER JOIN travaille ON entreprise.ID_entreprise = travaille.ID_entreprise
                     INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur
                     LEFT JOIN offres_stages ON entreprise.ID_entreprise = offres_stages.ID_entreprise
                     LEFT JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise 
-                    WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                    WHERE entreprise.Nom LIKE '$this->_searchName%' AND entreprise.Ville LIKE '$this->_searchPlace%'
                     ORDER BY entreprise.Ville
                     DESC LIMIT 1";
         return $requete;
     }
 
-    function Moyenne($searchNom, $searchLocalisation){
+    public function _Moyenne(){
         $requete = "SELECT AVG(`Ambiance`) AS avgAmbiance, AVG(`Accueil_entreprise`) AS avgAccueil_entreprise, 
                     AVG(`Accompagnement_etudiants`) AS avgAccompagnement_etudiants, AVG(`Taux_apprentissage`) AS avgTaux_apprentissage, 
                     `Nom`, `NB_stagiaires_CESI`, `Numero_rue`, `Rue`, `Ville`, `Code_postal`, `Pays`, `Secteur_activite`,
@@ -66,14 +96,14 @@
                     INNER JOIN secteur On travaille.ID_secteur = secteur.ID_secteur
                     INNER JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise
                     LEFT JOIN offres_stages ON entreprise.ID_entreprise = offres_stages.ID_entreprise 
-                    WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                    WHERE entreprise.Nom LIKE '$this->_searchName%' AND entreprise.Ville LIKE '$this->_searchPlace%'
                     ORDER BY entreprise.Ville";
         return $requete;
     }
-    function vote($searchNom, $searchLocalisation, $conn, $ID_utilisateur){
+    public function _Vote($conn, $ID_utilisateur){
         $requete2 = "SELECT * FROM entreprise 
                     LEFT JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise 
-                    WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                    WHERE entreprise.Nom LIKE '$this->_searchName%' AND entreprise.Ville LIKE '$this->_searchPlace%'
                     ORDER BY entreprise.Ville";
                     $reponse = $conn->query($requete2);
         while($donnees = $reponse->fetch()){
@@ -87,19 +117,19 @@
         return $vote;
     }
 
-    function InsertInto($ID_entreprise, $ID_utilisateur, $Ambiance, $Accueil_entreprise, $Accompagnement_etudiants, $Taux_apprentissage, $conn){
+    public function _InsertInto($ID_utilisateur, $Ambiance, $Accueil_entreprise, $Accompagnement_etudiants, $Taux_apprentissage, $conn){
         $send = "INSERT INTO evaluer(`ID_entreprise`, `ID_utilisateur`, `Ambiance`, `Accueil_entreprise`, `Accompagnement_etudiants`, `Taux_apprentissage`) 
-                VALUES('$ID_entreprise', $ID_utilisateur, $Ambiance, $Accueil_entreprise, $Accompagnement_etudiants, $Taux_apprentissage);";
+                VALUES('$this->_ID', $ID_utilisateur, $Ambiance, $Accueil_entreprise, $Accompagnement_etudiants, $Taux_apprentissage);";
         $conn->exec($send);
     }
 
-    function ListeEntreprise($searchNom, $searchLocalisation, $conn){
+    public function _ListeEntreprise($conn){
         $requete = "SELECT * FROM entreprise 
                     RIGHT JOIN offres_stages ON entreprise.ID_entreprise = offres_stages.ID_entreprise
-                    WHERE entreprise.Nom LIKE '$searchNom%' AND entreprise.Ville LIKE '$searchLocalisation%'
+                    WHERE entreprise.Nom LIKE '$this->_searchName%' AND entreprise.Ville LIKE '$this->_searchPlace%'
                     ORDER BY entreprise.Ville";
         $reponse = $conn->query($requete);
         return $reponse;
     }
-
+}
 ?>

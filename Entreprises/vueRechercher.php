@@ -1,7 +1,6 @@
 <?php 
-
-$conn = getBdd();
-//$conn : connexion bdd  
+$title = "CESI Stage - Recherche entreprise";
+ 
 $page = "rechercherentreprise";
 ob_start(); ?>
 
@@ -40,13 +39,17 @@ ob_start(); ?>
         
         <div class="row">
             <?php 
+            
             if(isset($_POST["searchNom"]) || isset($_POST["searchLocalisation"]) || isset($_POST["searchSecteur"])){
-                $searchNom =  $_POST["searchNom"];
-                $searchLocalisation =  $_POST["searchLocalisation"];
-                $searchSecteur =  $_POST["searchSecteur"];
-                $reponse = requeteRecherche($searchNom, $searchLocalisation, $searchSecteur, $conn);
-            }else{ 
-                $reponse = requeteTouteEntreprises($conn);
+                $recherche = new recherche($_POST["searchNom"],$_POST["searchLocalisation"],$_POST["searchSecteur"]);
+                $conn = $recherche->_getBdd();
+                //$conn : connexion bdd 
+                $reponse = $recherche->_requeteRecherche($conn);
+            }else{
+                $recherche = new recherche('','',''); 
+                $conn = $recherche->_getBdd();
+                //$conn : connexion bdd 
+                $reponse = $recherche->_requeteTouteEntreprises($conn);
             }
             
             while($donnees = $reponse->fetch()){?>

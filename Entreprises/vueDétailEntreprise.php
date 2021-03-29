@@ -1,8 +1,8 @@
 <?php 
 $title = "CESI Stage - Détails de l'Entreprise";
-//$conn : connexion bdd  
+ 
 $page = "1";
-$conn = getBdd();
+
 ob_start(); ?>
 
 <!------------------------------------------------------------------------------------------------------------------------->
@@ -32,7 +32,7 @@ ob_start(); ?>
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Rechercher</button>
+                        <button type="submit">Rechercher</button>
                         </div>
                     </div>
                 </form>
@@ -44,17 +44,17 @@ ob_start(); ?>
                 $test2 = 0;
                 
                 if(isset($_GET["searchNom"])){
-                    $searchNom =  $_GET["searchNom"];
-                    $searchLocalisation =  $_GET["searchLocalisation"];
-                    $ID_entreprise =  $_GET["ID_entreprise"];                 
-                    if($searchNom!= NULL && $searchLocalisation!= NULL){
-                        $requete = recherche($searchNom, $searchLocalisation);
+                    $details = new detail($_GET["searchNom"],$_GET["searchLocalisation"],$_GET["ID_entreprise"]);   
+                    $conn = $details->_getBdd();
+                    //$conn : connexion bdd          
+                    if($details->_getSearchName()!= NULL && $details->_getSearchPlace()!= NULL){
+                        $requete = $details->_Recherche();
                         $reponse = $conn->query($requete);
                         $test1 = 1;
                         while($donnees = $reponse->fetch()){
                             if(isset($donnees['Ambiance'])){
                                 $test2 = 1;
-                                $requete = Moyenne($searchNom,$searchLocalisation);
+                                $requete = $details->_Moyenne();
                             }
                         }
                     }
@@ -62,7 +62,7 @@ ob_start(); ?>
 
                 if($test1 == 1){
                   ?>
-                    <form class="form-horizontal" action="./détailEntreprise.php?searchNom=<?php echo $searchNom;?>&searchLocalisation=<?php echo $searchLocalisation;?>&ID_entreprise=<?php echo $ID_entreprise;?>&submit=1" method="post">
+                    <form class="form-horizontal" action="./détailEntreprise.php?searchNom=<?php echo $details->_getSearchName();?>&searchLocalisation=<?php echo $details->_getSearchPlace();?>&ID_entreprise=<?php echo $details->_getSearchID();?>&submit=1" method="post">
                       <div class="form-group">
                         <h1 class="col-lg-12 col-md-12 col-sm-12">Evaluer</h1>
                         <label class="control-label col-lg-2 col-md-3 col-sm-5" for="Range: 5">Ambiance</label>
@@ -86,7 +86,7 @@ ob_start(); ?>
                         </div>
 
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-default">Valider</button>
+                          <button type="submit">Valider</button>
                         </div>
                       </div>
                     </form>
@@ -95,7 +95,7 @@ ob_start(); ?>
                   <?php
                   if(isset($_COOKIE['ID_utilisateur'])){
                     $ID_utilisateur = $_COOKIE['ID_utilisateur'];
-                    $vote = vote($searchNom, $searchLocalisation, $conn, $ID_utilisateur);
+                    $vote = $details->_Vote($conn, $ID_utilisateur);
                     
                     if($vote == false){
                       if(isset($_GET["submit"])){
@@ -107,19 +107,19 @@ ob_start(); ?>
                         <h1>Votre note à été prise en compte : </h1>
                         <h3>
                           L'ambiance : </br>
-                          <?php star($Ambiance);?></br>
+                          <?php $details->_star($Ambiance);?></br>
                           Accueil de l'entreprise : </br>
-                          <?php star($Accueil_entreprise);?></br>
+                          <?php $details->_star($Accueil_entreprise);?></br>
                           Accompagnement des étudiants : </br>
-                          <?php star($Accompagnement_etudiants);?></br>
+                          <?php $details->_star($Accompagnement_etudiants);?></br>
                           Taux d'apprentissage : </br>
-                          <?php star($Taux_apprentissage);?></br>
+                          <?php $details->_star($Taux_apprentissage);?></br>
                         </h3>
                         <?php
 
-                        InsertInto($ID_entreprise, $ID_utilisateur, $Ambiance, $Accueil_entreprise, $Accompagnement_etudiants, $Taux_apprentissage, $conn);
+                        $details->_InsertInto($ID_utilisateur, $Ambiance, $Accueil_entreprise, $Accompagnement_etudiants, $Taux_apprentissage, $conn);
                         $test2 = 1;
-                        $requete = Moyenne($searchNom, $searchLocalisation);
+                        $requete = $details->_Moyenne();
                       }
                     }
                     else{
@@ -142,7 +142,7 @@ ob_start(); ?>
                     $reponse = $conn->query($requete);
                     while($donnees = $reponse->fetch()){?>
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="col-lg-6 col-md-6 col-sm-12" >
+                            <div class="col-lg-6 col-md-6 col-sm-12">
                                 <h1> <?php echo $donnees['Nom'];?></h1>
                                 <h4>
                                     Secteur : 
@@ -168,13 +168,13 @@ ob_start(); ?>
                                   <h1>Les notes</h1>
                                   <h3>
                                       L'ambiance : </br>
-                                      <?php star($donnees['avgAmbiance']);?></br>
+                                      <?php $details->_star($donnees['avgAmbiance']);?></br>
                                       Accueil de l'entreprise : </br>
-                                      <?php star($donnees['avgAccueil_entreprise']);?></br>
+                                      <?php $details->_star($donnees['avgAccueil_entreprise']);?></br>
                                       Accompagnement des étudiants : </br>
-                                      <?php star($donnees['avgAccompagnement_etudiants']);?></br>
+                                      <?php $details->_star($donnees['avgAccompagnement_etudiants']);?></br>
                                       Taux d'apprentissage : </br>
-                                      <?php star($donnees['avgTaux_apprentissage']);?></br>
+                                      <?php $details->_star($donnees['avgTaux_apprentissage']);?></br>
                                   </h3>
                                 </div>
                               <?php
@@ -197,7 +197,7 @@ ob_start(); ?>
                             </div>
                             <?php 
                           }
-                          $reponse = ListeEntreprise($searchNom, $searchLocalisation, $conn);
+                          $reponse = $details->_ListeEntreprise($conn);
                           while($donnees = $reponse->fetch()){?>
                           <div class="col-lg-4 col-md-6 col-sm-12" >
                               <h3> <?php echo $donnees['Nom'];?></h3>
@@ -215,4 +215,4 @@ ob_start(); ?>
         
 <?php $contenu = ob_get_clean(); ?>
 
-<?php require("../gabarit.php"); ?>
+<?php require("../gabarit.php"); ?> 
