@@ -1,3 +1,5 @@
+<script src="./pagination.js" type="text/javascript"></script>
+
 <?php 
 $page = "rechercheroffre";
 require("../Nav/header.php");
@@ -85,18 +87,35 @@ require("../Nav/header.php");
                                 DESC LIMIT 12";
                 }
                 $reponse = $conn->query($requete);
-                while($donnees = $reponse->fetch()){?>
-                <div class="col-lg-4 col-md-6 col-sm-12" >
-                    <h3> <?php echo $donnees['Nom'];?></h3>
-                    <h4> <?php echo $donnees['Ville'];?></h4>
-                    <p><?php echo $donnees['Description'];?><p>
-                    <a href="../OffresDeStage/détailOffre.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_offre=<?php echo $donnees['ID_offre'];?>"><button>En savoir plus</button></a>
-                </div>
-                <?php 
+                $show='';
+                while($donnees = $reponse->fetch()){
+                $show .='<div class="rows"> 
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <h3>'.$donnees['Nom'].'</h3>
+                                <h4>'.$donnees['Ville'].'</h4>
+                                <p>'.$donnees['Description'].'<p>
+                                <a href="../OffresDeStage/détailOffre.php?searchNom='.$donnees['Nom'].'&searchLocalisation='.$donnees['Ville'].'&ID_offre='.$donnees['ID_offre'].'"><button>En savoir plus</button></a>
+                            </div>
+                        </div>';                     
                     }
+                ?>
+                <div class="entreprises">
+                    <div class="tablebody">
+                        <?php echo $show;?>
+                        <div>
+                            <div colspan="3" id="paging" class="col-sm-12"></div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                        init();
+                        selectPage(1);
+                </script> 
+                <?php 
                     $reponse->closeCursor(); // Termine le traitement de la requête
                 ?>
           </main>
 <!------------------------------------------------------------------------------------------------------------------------->
 
 <?php require("../Nav/footer.php"); ?>
+
