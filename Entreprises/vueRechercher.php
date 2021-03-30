@@ -1,3 +1,5 @@
+<script src="../Assets/pagination.js" type="text/javascript"></script>
+
 <?php 
 $title = "CESI Stage - Recherche entreprise";
  
@@ -51,17 +53,32 @@ ob_start(); ?>
                 //$conn : connexion bdd 
                 $reponse = $recherche->_requeteTouteEntreprises($conn);
             }
-            
-            while($donnees = $reponse->fetch()){?>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <h3> <?php echo $donnees['Nom'];?></h3>
-                <h4> <?php echo $donnees['Ville'];?></h4>
-                <p> <?php echo $donnees['Secteur_activite'];?><p>
-                <a href="../Entreprises/détailEntreprise.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_entreprise=<?php echo $donnees['ID_entreprise'];?>"><button>En savoir plus</button></a>
-            </div>
-            <?php 
+            $show = '';
+            while($donnees = $reponse->fetch()){
+            $show .='<div class="rows"> 
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <h3>'.$donnees['Nom'].'</h3>
+                                <h4>'.$donnees['Ville'].'</h4>
+                                <p>'.$donnees['Secteur_activite'].'<p>
+                                <a href="../Entreprises/détailEntreprise.php?searchNom='.$donnees['Nom'].'&searchLocalisation='.$donnees['Ville'].'&ID_entreprise='.$donnees['ID_entreprise'].'"><button>En savoir plus</button></a>
+                            </div>
+                        </div>';
                 }
-                $reponse->closeCursor(); // Termine le traitement de la requête   
+            ?>
+            <div class="entreprises">
+                    <div class="tablebody">
+                        <?php echo $show;?>
+                        <div>
+                            <div colspan="3" id="paging" class="col-sm-12"></div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                        init();
+                        selectPage(1);
+                </script>
+            <?php 
+            $reponse->closeCursor(); // Termine le traitement de la requête   
             ?>
         </div>
     </main>
