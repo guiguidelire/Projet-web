@@ -51,6 +51,7 @@ require("../Nav/header.php");
                     <?php
                     $idcentre = $donnees['ID_centre'];
                     $idpromotion = $donnees['ID_promotion'];
+                    $nomcentre = $donnees['Nom_centre'];
                 }
                 ?>
                 </div>
@@ -66,6 +67,30 @@ require("../Nav/header.php");
                     INNER JOIN centre ON utilisateur.ID_centre = centre.ID_centre
                     INNER JOIN promotion ON utilisateur.ID_promotion = promotion.ID_promotion
                     WHERE utilisateur.ID_centre = $idcentre AND utilisateur.ID_promotion = $idpromotion AND (utilisateur.ID_fonction = 4 OR utilisateur.ID_fonction = 2)";                    
+
+                    $reponse = $conn->query($requete);
+                    while($donnees = $reponse->fetch()){?>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <h3> <?php echo $donnees['Nom'];?> <?php echo $donnees['Prenom'];?></h3>
+                        <h4> <?php echo $donnees['Nom_centre'];?></h4>
+                        <h4> <?php echo $donnees['Promotion'];?></h4>
+                        <p><?php echo $donnees['Fonction'];?><p>
+                        <a href="../Compte/detailUtilisateur.php?ID_utilisateur=<?php echo $donnees['ID_utilisateur']?>"><button>Plus d'information</button></a>
+                    </div>
+                    <?php
+                    }
+                }
+
+                if($_COOKIE['Fonction']==1){?>
+                    <div class="col-lg-12 col-md-12 col-sm-12"> 
+                        <h1 class="col-lg-12 col-md-12 col-sm-12">Informations utilisateurs dans le centre de <?php echo $nomcentre ?></h1>
+                    </div>
+                    <?php
+                    $requete =" SELECT * FROM utilisateur    
+                    INNER JOIN role ON utilisateur.ID_fonction = role.ID_fonction
+                    INNER JOIN centre ON utilisateur.ID_centre = centre.ID_centre
+                    INNER JOIN promotion ON utilisateur.ID_promotion = promotion.ID_promotion
+                    WHERE utilisateur.ID_centre = $idcentre  AND (utilisateur.ID_fonction = 4 OR utilisateur.ID_fonction = 3 OR utilisateur.ID_fonction = 2)";                    
 
                     $reponse = $conn->query($requete);
                     while($donnees = $reponse->fetch()){?>
