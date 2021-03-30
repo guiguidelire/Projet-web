@@ -96,6 +96,37 @@ ob_start(); ?>
                   if(isset($_COOKIE['ID_utilisateur'])){
                     $ID_utilisateur = $_COOKIE['ID_utilisateur'];
                     $vote = $details->_Vote($conn, $ID_utilisateur);
+                    $ID_entreprise = $details->_getSearchID();
+                    if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){?>
+                      <div class="col-lg-12 col-md-12 col-sm-12">
+                        <a href="../Entreprises/détailEntreprise.php?delete=true&ID_entreprise=<?php echo $ID_entreprise;?>"><button>Supprimer cette entreprise</button></a>
+                      </div>                           
+                      <?php
+                      if(isset($_GET['delete'])){
+                          if($_GET['delete']==true){
+                            $ID_entreprise = $_GET['ID_entreprise'];
+                            $requete = "SELECT ID_offre FROM offres_stages WHERE ID_entreprise = $ID_entreprise";
+                            $reponse = $conn->query($requete);
+                            while($donnees = $reponse->fetch()){
+                              $ID_offre = $donnees['ID_offre'];
+                              $requete = "DELETE FROM postuler WHERE ID_offre = $ID_offre;
+                              DELETE FROM wish_list WHERE ID_offre = $ID_offre;
+                              DELETE FROM concerne WHERE ID_offre = $ID_offre;
+                              DELETE FROM necessite WHERE ID_offre = $ID_offre;
+                              DELETE FROM offres_stages WHERE ID_offre = $ID_offre;";
+                              $conn->exec($requete);
+                            }
+                            $requete = "DELETE FROM travaille WHERE ID_entreprise = $ID_entreprise;
+                            DELETE FROM evaluer WHERE ID_entreprise = $ID_entreprise;
+                            DELETE FROM offres_stages WHERE ID_entreprise = $ID_entreprise;
+                            DELETE FROM entreprise WHERE ID_entreprise = $ID_entreprise;";
+                            $conn->exec($requete);
+                            ?> 
+                            <meta http-equiv="refresh" content="0;URL=rechercher.php">
+                            <?php
+                          }
+                        }
+                      }
                     
                     if($vote == false){
                       if(isset($_GET["submit"])){
