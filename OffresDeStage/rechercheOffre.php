@@ -1,4 +1,4 @@
-<script src="./pagination.js" type="text/javascript"></script>
+<script src="../Assets/pagination.js" type="text/javascript"></script>
 
 <?php 
 $page = "rechercheroffre";
