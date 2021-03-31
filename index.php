@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <title>CESI STAGE</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Description" content="CESI Stage vous permet de trouvez le stage dont VOUS revez !">
+        <meta name="theme-color" content="#333333">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script>
+          if("serviceWorker" in navigator){
+
+            navigator.serviceWorker
+              .register("./serviceWorker.js")
+              .then((sw) => console.log("sw registered"))
+              .catch((err) => console.log(err));
+          }
+        </script>
+        <link rel="manifest" href="./manifest.json">
         <link href="./Assets/Styles/style.css" rel="stylesheet">
            
     </head>
@@ -15,7 +27,7 @@
             <nav class="navbar navbar-inverse navbar-fixed-top"> 
                 <div class="container-fluid">
                   <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" aria-label="Menu">
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
@@ -89,7 +101,7 @@
                         }
                       }
                       ?>
-                    </li>
+                    <!--</li>-->
                   </ul>
                 </div>
               </div>
@@ -188,7 +200,7 @@
               </a>
             </div>
             <div class="Titre_Nouveauté">
-                <h3>Stage</h3>
+                <h1>Stage</h1>
                 <p>Nouveauté</p>
             </div>
             <div class="Nouveauté">
@@ -205,7 +217,7 @@
               <div class="row">
                 <?php while($donnees = $reponse->fetch()){?>
                   <div class="col-lg-4 col-md-6 col-sm-12" >
-                    <h3>Stage chez <?php echo $donnees['Nom'];?></h3>
+                    <h2>Stage chez <?php echo $donnees['Nom'];?></h2>
                     <p><?php echo $donnees['Description'];?><p>
                     <a href="./OffresDeStage/détailOffre.php?searchNom=<?php echo $donnees['Nom'];?>&searchLocalisation=<?php echo $donnees['Ville'];?>&ID_offre=<?php echo $donnees['ID_offre'];?>"><button>En savoir plus</button></a>
                   </div>

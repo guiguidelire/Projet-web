@@ -1,4 +1,6 @@
 AuthName "Page protégée"
 AuthType Basic
-AuthUserFile "/www/git/.htpasswd"
+AuthUserFile "/www/ProjetWEB/.htpasswd"
 Require valid-user
+
+ErrorDocument 404 http://cesistage/Projetweb/PageInexistante.php

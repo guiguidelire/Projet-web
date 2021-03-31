@@ -46,25 +46,28 @@ class recherche{
                     INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur";
         $test = 0;
         if($this->_searchSecteur !== NULL || $this->_searchPlace!== NULL || $this->_searchName!== NULL){
+            $SS=$this->_searchSecteur;
+            $SP=$this->_searchPlace;
+            $SN=$this->_searchName;
             $requete =" $requete WHERE";
             if($this->_searchSecteur !== NULL){
-                $requete =" $requete secteur.Secteur_activite LIKE '$this->_searchSecteur%'";
+                $requete =" $requete secteur.Secteur_activite LIKE '$SS%'";
                 $test = 1;
             }
             if($this->_searchPlace !== NULL){
                 if($test == 1){
                     $requete = " $requete AND";
                 }
-                $requete = " $requete entreprise.Ville LIKE '$this->_searchPlace%'";
+                $requete = " $requete entreprise.Ville LIKE '$SP%'";
                 $test =1;
             }
             if($this->_searchName !== NULL){
                 if($test == 1){
                     $requete = " $requete AND";
                 }
-                $requete = " $requete entreprise.Nom LIKE '$this->_searchName%'";
+                $requete = " $requete entreprise.Nom LIKE '$SN%'";
             }
-            $requete = " $requete GROUP BY entreprise.Ville";
+            $requete = " $requete ORDER BY entreprise.Nom";
         }
         $reponse = $conn->query($requete);
         return $reponse;
@@ -74,7 +77,7 @@ class recherche{
                     FROM entreprise
                     INNER JOIN travaille ON travaille.ID_entreprise = entreprise.ID_entreprise 
                     INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur 
-                    ORDER BY entreprise.Ville";
+                    ORDER BY entreprise.Nom";
         $reponse = $conn->query($requete);
         return $reponse;
     }

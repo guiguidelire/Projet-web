@@ -81,7 +81,7 @@ class detail{
                     LEFT JOIN offres_stages ON entreprise.ID_entreprise = offres_stages.ID_entreprise
                     LEFT JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise 
                     WHERE entreprise.Nom LIKE '$this->_searchName%' AND entreprise.Ville LIKE '$this->_searchPlace%'
-                    ORDER BY entreprise.Ville
+                    ORDER BY entreprise.Nom
                     DESC LIMIT 1";
         return $requete;
     }
@@ -97,7 +97,7 @@ class detail{
                     INNER JOIN evaluer ON evaluer.ID_entreprise = entreprise.ID_entreprise
                     LEFT JOIN offres_stages ON entreprise.ID_entreprise = offres_stages.ID_entreprise 
                     WHERE entreprise.Nom LIKE '$this->_searchName%' AND entreprise.Ville LIKE '$this->_searchPlace%'
-                    ORDER BY entreprise.Ville";
+                    ORDER BY entreprise.Nom";
         return $requete;
     }
     public function _Vote($conn, $ID_utilisateur){

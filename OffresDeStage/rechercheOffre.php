@@ -47,7 +47,9 @@ require("../Nav/header.php");
                 FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
                 INNER JOIN travaille ON travaille.ID_entreprise = entreprise.ID_entreprise 
-                INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur";
+                INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur
+                LEFT JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
+                LEFT JOIN competences ON competences.ID_competences = necessite.ID_competences";
 
                 if(isset($_POST["searchCompetence"]) || isset($_POST["searchLocalisation"]) || isset($_POST["searchSecteur"])){
                     $searchCompetence =  $_POST["searchCompetence"];
@@ -74,15 +76,18 @@ require("../Nav/header.php");
                             }
                             $requete = " $requete competences.Competences LIKE '$searchCompetence%'";
                         }
-                        $requete = " $requete GROUP BY offres_stages.ID_offre";
+                        
                     }
+                    $requete = " $requete GROUP BY offres_stages.ID_offre
+                                                ORDER BY entreprise.Nom, offres_stages.Description;";
                 }
                 else{ 
                     $requete =" SELECT entreprise.Nom, offres_stages.Description, entreprise.Ville, offres_stages.ID_offre 
                                 FROM offres_stages 
                                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
-                                ORDER BY ID_offre ";
+                                ORDER BY entreprise.Nom, offres_stages.Description; ";
                 }
+
                 $reponse = $conn->query($requete);
                 $show='';
                 while($donnees = $reponse->fetch()){

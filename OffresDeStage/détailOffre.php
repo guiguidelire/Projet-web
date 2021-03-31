@@ -119,50 +119,50 @@ require("../Nav/header.php");
                                 }
                             }
                         }
-                        
-                        
-                        ?>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                        <a href="../OffresDeStage/postuler.php?ID_offre=<?php echo $ID_offre;?>"><button>Postuler</button></a>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                        <a href="../OffresDeStage/détailOffre.php?wishlist=true&ID_offre=<?php echo $ID_offre;?>"><button>Ajouté à la liste de souhait</button></a>
-                        </div>
-                        
-                        <?php    
-                        $ID_utilisateur = $_COOKIE['ID_utilisateur'];
-                        $requete = "SELECT * FROM offres_stages
-                        INNER JOIN wish_list ON offres_stages.ID_offre = wish_list.ID_offre 
-                        WHERE offres_stages.ID_offre = $ID_offre";
-                        $reponse = $conn->query($requete);
-                        $postul = false;
-                        while($donnees = $reponse->fetch()){
-                            if($ID_utilisateur == $donnees['ID_utilisateur']){
-                                $postul = true;
-                                break;
+                        else{
+                            ?>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                            <a href="../OffresDeStage/postuler.php?ID_offre=<?php echo $ID_offre;?>"><button>Postuler</button></a>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                            <a href="../OffresDeStage/détailOffre.php?wishlist=true&ID_offre=<?php echo $ID_offre;?>"><button>Ajouté à la liste de souhait</button></a>
+                            </div>
+                            
+                            <?php    
+                            $ID_utilisateur = $_COOKIE['ID_utilisateur'];
+                            $requete = "SELECT * FROM offres_stages
+                            INNER JOIN wish_list ON offres_stages.ID_offre = wish_list.ID_offre 
+                            WHERE offres_stages.ID_offre = $ID_offre";
+                            $reponse = $conn->query($requete);
+                            $postul = false;
+                            while($donnees = $reponse->fetch()){
+                                if($ID_utilisateur == $donnees['ID_utilisateur']){
+                                    $postul = true;
+                                    break;
+                                }
+                                else{
+                                    $postul = false;
+                                }
+                            }
+                            
+                            if($postul == false){
+                                if(isset($_GET['wishlist'])){
+                                    ?>
+                                    <h1>Cette offre à bien été ajouté a votre liste</h1>
+                                    <?php
+                                    $send = "INSERT INTO wish_list(`ID_offre`, `ID_utilisateur`) 
+                                    VALUES($ID_offre, $ID_utilisateur);";
+                                    $conn->exec($send);
+                                }
                             }
                             else{
-                                $postul = false;
+                                if(isset($_GET['wishlist'])){
+                                    ?>
+                                    <h1>Cette offre est déjà dans votre liste</h1>
+                                    <?php
+                                }
                             }
-                        }
-                        
-                        if($postul == false){
-                            if(isset($_GET['wishlist'])){
-                                ?>
-                                <h1>Cette offre à bien été ajouté a votre liste</h1>
-                                <?php
-                                $send = "INSERT INTO wish_list(`ID_offre`, `ID_utilisateur`) 
-                                VALUES($ID_offre, $ID_utilisateur);";
-                                $conn->exec($send);
-                            }
-                        }
-                        else{
-                            if(isset($_GET['wishlist'])){
-                                ?>
-                                <h1>Cette offre est déjà dans votre liste</h1>
-                                <?php
-                            }
-                        }
+                        }                         
                     }
                     ?>
                     </div>

@@ -1,0 +1,22 @@
+{
+    "name": "CESI Stage",
+    "short_name": "CS",
+    "start_url": "./index.php",
+    "display": "standalone",
+    "background-color": "#FFFF", 
+    "theme_color" : "#03a9f4",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+        "src": "./Assets/Pictures/LOGO_CESI.png",
+        "type": "image/png",
+        "sizes": "400x400"
+        },
+        {
+            "src": "./Assets/Pictures/LOGO_CESI_900.png",
+            "type": "image/png",
+            "sizes": "900x900"
+        }
+    ],
+    "background_color": "#333333"
+}

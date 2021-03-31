@@ -20,6 +20,7 @@ require("../Nav/header.php");
 
 
                     if(isset($_POST["creationOffreEntreprise"])){
+                        $offreCréée = true;
                         $duréeStage =  $_POST["duréeStage"];
                         $dateDebutStage =  $_POST["dateDebutStage"];
                         $nbPlace =  $_POST["nbPlace"];
@@ -73,7 +74,7 @@ require("../Nav/header.php");
                                     </div>
                                     <label class="control-label col-sm-2 col-md-1" for="dateDebutStage">Début du stage :</label>
                                     <div class="col-sm-4">
-                                        <input type="texte" class="form-control" id="dateDebutStage" name="dateDebutStage" placeholder="Entrer date de début du stage (AAAA-MM-DD)" required>
+                                        <input type="date" class="form-control" id="dateDebutStage" name="dateDebutStage" placeholder="Entrer date de début du stage (AAAA-MM-DD)" required>
                                     </div>
                                 </div>
                             </div>
@@ -190,7 +191,7 @@ require("../Nav/header.php");
                                                         (SELECT ID_offre FROM offres_stages ORDER BY ID_offre DESC LIMIT 1));";
                             $conn->exec($requeteOffreNecessite); 
                         }
-                        $offreCréée = true;
+                        
                     }
                     ?>
                     </div>

@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <title>CESI STAGE</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Description" content="CESI Stage vous permet de trouvez le stage dont VOUS revez !">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script>
+          if("serviceWorker" in navigator){
+            
+            navigator.serviceWorker
+              .register("../serviceWorker.js")
+              .then((sw) => console.log("sw registered"))
+              .catch((err) => console.log(err));
+          }
+        </script>
+        <link rel="manifest" href="../manifest.json">
         <link href="../Assets/Styles/style.css" rel="stylesheet">
         
     </head>
@@ -15,7 +26,7 @@
             <nav class="navbar navbar-inverse navbar-fixed-top"> 
                 <div class="container-fluid">
                   <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"  aria-label="Menu">
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
@@ -137,6 +148,9 @@
                         }
                       } ?>
                     </li>
+
+
+
                   </ul>
                 </div>
               </div>

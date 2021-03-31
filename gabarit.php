@@ -4,9 +4,20 @@
         <title><?php echo $title ?></title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Description" content="CESI Stage vous permet de trouvez le stage dont VOUS revez !">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script>
+          if("serviceWorker" in navigator){
+            
+            navigator.serviceWorker
+              .register("../serviceWorker.js")
+              .then((sw) => console.log("sw registered"))
+              .catch((err) => console.log(err));
+          }
+        </script>
+        <link rel="manifest" href="../manifest.json">
         <link href="../Assets/Styles/style.css" rel="stylesheet">
         
     </head>
@@ -15,7 +26,7 @@
             <nav class="navbar navbar-inverse navbar-fixed-top"> 
                 <div class="container-fluid">
                   <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"  aria-label="Menu">
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
@@ -158,7 +169,7 @@
           <div class="container p-4">
             <div class="row">
               <div class="col-lg-4 col-md-6 col-sm-12">
-                <h3 class="text-uppercase">Localisation</h3>
+                <h5 class="text-uppercase">Localisation</h5>
 
                 <p>
                 Parc Club des Tanneries,</br>
@@ -186,7 +197,7 @@
               </div>
 
               <div class="col-lg-4 col-md-6 col-sm-12">
-                <h3 class="text-uppercase">Liens Pratiques</h3>
+                <h5 class="text-uppercase">Liens Pratiques</h5>
                 <ul class="list-unstyled">
                   <li>
                     <a href="https://wayf.cesi.fr/login" class="text-dark">Ent CESI</a>
