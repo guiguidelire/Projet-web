@@ -74,8 +74,7 @@ class recherche{
                     FROM entreprise
                     INNER JOIN travaille ON travaille.ID_entreprise = entreprise.ID_entreprise 
                     INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur 
-                    ORDER BY entreprise.Ville
-                    DESC LIMIT 12";
+                    ORDER BY entreprise.Ville";
         $reponse = $conn->query($requete);
         return $reponse;
     }

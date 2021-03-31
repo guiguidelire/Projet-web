@@ -13,9 +13,9 @@ if(isset($_POST['Login'])){
             if($donneesLogin['mdp']== crypt($_POST['motDePasse'], 'rl')){
                 $MDPCheck = true;
                 $IDFonction = $donneesLogin['ID_fonction'];
-                setcookie('Login', $_POST['Login'],time()+300,'/');
-                setcookie('ID_utilisateur',$donneesLogin['ID_utilisateur'],time()+300,'/');
-                setcookie('Fonction',$IDFonction,time()+300,'/');
+                setcookie('Login', $_POST['Login'],time()+3600,'/');
+                setcookie('ID_utilisateur',$donneesLogin['ID_utilisateur'],time()+3600,'/');
+                setcookie('Fonction',$IDFonction,time()+3600,'/');
             }
         }
     }
@@ -145,16 +145,16 @@ require("../Nav/header.php");
                     <br>
                     <div class="row">
                         <div class="form-group ">
-                            <label class="control-label col-sm-2 col-sm-offset-3" for="Login">Login :</label>
-                            <div class="col-sm-3">
+                            <label class="control-label col-xs-2 col-xs-offset-3" for="Login">Login :</label>
+                            <div class="col-xs-3">
                                 <input type="texte" class="form-control" id="Login" name="Login" placeholder="Entrer votre Login" required>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group ">
-                            <label class="control-label col-sm-2 col-sm-offset-3" for="motDePasse">Password :</label>
-                            <div class="col-sm-3">
+                            <label class="control-label col-xs-2 col-xs-offset-3" for="motDePasse">Password :</label>
+                            <div class="col-xs-3">
                                 <input type="password" class="form-control" id="motDePasse" name="motDePasse" placeholder="Entrer votre password" required>
                             </div>
                         </div>

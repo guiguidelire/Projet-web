@@ -43,13 +43,11 @@ require("../Nav/header.php");
         
             <div class="row">
                 <?php 
-                $requete =" SELECT entreprise.Nom, offres_stages.Description, secteur.Secteur_activite, entreprise.Ville
+                $requete =" SELECT entreprise.Nom, offres_stages.Description, secteur.Secteur_activite, entreprise.Ville, offres_stages.ID_offre 
                 FROM offres_stages 
                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
                 INNER JOIN travaille ON travaille.ID_entreprise = entreprise.ID_entreprise 
-                INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur 
-                INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
-                INNER JOIN competences ON necessite.ID_competences = competences.ID_competences";
+                INNER JOIN secteur ON travaille.ID_secteur = secteur.ID_secteur";
 
                 if(isset($_POST["searchCompetence"]) || isset($_POST["searchLocalisation"]) || isset($_POST["searchSecteur"])){
                     $searchCompetence =  $_POST["searchCompetence"];
@@ -83,8 +81,7 @@ require("../Nav/header.php");
                     $requete =" SELECT entreprise.Nom, offres_stages.Description, entreprise.Ville, offres_stages.ID_offre 
                                 FROM offres_stages 
                                 INNER JOIN entreprise ON offres_stages.ID_entreprise = entreprise.ID_entreprise 
-                                ORDER BY ID_offre 
-                                DESC LIMIT 12";
+                                ORDER BY ID_offre ";
                 }
                 $reponse = $conn->query($requete);
                 $show='';

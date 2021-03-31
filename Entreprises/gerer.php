@@ -1,6 +1,6 @@
 <?php
 
-require 'ModeleDétail.php';
+require 'ModeleGerer.php';
 
 try {
     if(!isset($_COOKIE['ID_utilisateur'])){

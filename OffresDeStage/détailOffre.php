@@ -71,16 +71,19 @@ require("../Nav/header.php");
                         INNER JOIN necessite ON offres_stages.ID_offre = necessite.ID_offre
                         INNER JOIN competences ON necessite.ID_competences = competences.ID_competences
                         WHERE offres_stages.ID_offre = $ID_offre";
-                        $reponse = $conn->query($requete);
+                        $reponse = $conn->query($requete); 
+                        ?>
+                        <div class="col-lg-12 col-md-12 col-sm-12" >
+                        <?php
                         while($donnees = $reponse->fetch()){
-                          ?>
-                              <h4>
-                                  <?php echo $donnees['Competences'];?> 
-                              </h4>
-                        </div>
+                            ?>
+                            <h4>
+                                <?php echo $donnees['Competences'];?> 
+                            </h4>
                         <?php
                         }
                         ?>
+                        </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
                     <?php

@@ -158,7 +158,7 @@
           <div class="container p-4">
             <div class="row">
               <div class="col-lg-4 col-md-6 col-sm-12">
-                <h5 class="text-uppercase">Localisation</h5>
+                <h3 class="text-uppercase">Localisation</h3>
 
                 <p>
                 Parc Club des Tanneries,</br>
@@ -186,7 +186,7 @@
               </div>
 
               <div class="col-lg-4 col-md-6 col-sm-12">
-                <h5 class="text-uppercase">Liens Pratiques</h5>
+                <h3 class="text-uppercase">Liens Pratiques</h3>
                 <ul class="list-unstyled">
                   <li>
                     <a href="https://wayf.cesi.fr/login" class="text-dark">Ent CESI</a>

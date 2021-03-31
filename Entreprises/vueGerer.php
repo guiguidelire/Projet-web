@@ -1,5 +1,4 @@
 <?php
-require("./POO.php");
 require("../Assets/ConnexionBDD.php");//$conn : connexion bdd   
 $page = "gererentreprise";
 require("../Nav/header.php");
@@ -70,7 +69,7 @@ require("../Nav/header.php");
                     <div class="form-group ">
                         <label class="control-label col-sm-2 col-sm-offset-3" for="numRue">Numero de rue :</label>
                         <div class="col-sm-4">
-                            <input type="texte" class="form-control" id="numRue" name="numRue" placeholder="Entrer le nombre d'étudiant CESI y étant deja aller " required>
+                            <input type="texte" class="form-control" id="numRue" name="numRue" placeholder="Entrer le numéro de rue" required>
                         </div>
                     </div>
                 </div>
@@ -79,7 +78,7 @@ require("../Nav/header.php");
                     <div class="form-group ">
                         <label class="control-label col-sm-2 col-sm-offset-3" for="rue">Rue :</label>
                         <div class="col-sm-4">
-                            <input type="texte" class="form-control" id="rue" name="rue" placeholder="Entrer le nombre d'étudiant CESI y étant deja aller " required>
+                            <input type="texte" class="form-control" id="rue" name="rue" placeholder="Entrer la rue " required>
                         </div>
                     </div>
                 </div>
@@ -88,7 +87,7 @@ require("../Nav/header.php");
                     <div class="form-group ">
                         <label class="control-label col-sm-2 col-sm-offset-3" for="ville">Ville :</label>
                         <div class="col-sm-4">
-                            <input type="texte" class="form-control" id="ville" name="ville" placeholder="Entrer le nombre d'étudiant CESI y étant deja aller " required>
+                            <input type="texte" class="form-control" id="ville" name="ville" placeholder="Entrer la ville " required>
                         </div>
                     </div>
                 </div>
@@ -97,7 +96,7 @@ require("../Nav/header.php");
                     <div class="form-group ">
                         <label class="control-label col-sm-2 col-sm-offset-3" for="codePostal">Code Postal :</label>
                         <div class="col-sm-4">
-                            <input type="texte" class="form-control" id="codePostal" name="codePostal" placeholder="Entrer le nombre d'étudiant CESI y étant deja aller " required>
+                            <input type="texte" class="form-control" id="codePostal" name="codePostal" placeholder="Entrer le code postale " required>
                         </div>
                     </div>
                 </div>
@@ -106,7 +105,7 @@ require("../Nav/header.php");
                     <div class="form-group ">
                         <label class="control-label col-sm-2 col-sm-offset-3" for="pays">Pays :</label>
                         <div class="col-sm-4">
-                            <input type="texte" class="form-control" id="pays" name="pays" placeholder="Entrer le nombre d'étudiant CESI y étant deja aller " required>
+                            <input type="texte" class="form-control" id="pays" name="pays" placeholder="Entrer le pays " required>
                         </div>
                     </div>
                 </div><br>
