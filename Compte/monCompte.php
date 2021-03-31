@@ -81,7 +81,7 @@ require("../Nav/header.php");
                     }
                 }
 
-                if($_COOKIE['Fonction']==1){?>
+                else if($_COOKIE['Fonction']==1){?>
                     <div class="col-lg-12 col-md-12 col-sm-12"> 
                         <h1 class="col-lg-12 col-md-12 col-sm-12">Informations utilisateurs dans le centre de <?php echo $nomcentre ?></h1>
                     </div>
