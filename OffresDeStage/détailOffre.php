@@ -88,7 +88,29 @@ require("../Nav/header.php");
                          <h3>Veuillez vous connecter pour postuler a cette offre</h3>
                        <?php
                     }
-                    else{?>
+                    else{
+                        if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){?>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <a href="../OffresDeStage/détailOffre.php?delete=true&ID_offre=<?php echo $ID_offre;?>"><button class="btn btn-default">Suprimer cette offre</button></a>
+                            </div>                           
+                            <?php
+                            if(isset($_GET['delete'])){
+                                if($_GET['delete']==true){
+                                    $requete = "DELETE FROM postuler WHERE ID_offre = $ID_offre;
+                                    DELETE FROM wish_list WHERE ID_offre = $ID_offre;
+                                    DELETE FROM concerne WHERE ID_offre = $ID_offre;
+                                    DELETE FROM necessite WHERE ID_offre = $ID_offre;
+                                    DELETE FROM offres_stages WHERE ID_offre = $ID_offre;";
+                                    $conn->exec($requete);
+                                    ?> 
+                                    <meta http-equiv="refresh" content="0;URL=rechercheOffre.php">
+                                    <?php
+                                }
+                            }
+                        }
+                        
+                        
+                        ?>
                         <div class="col-lg-12 col-md-12 col-sm-12">
                         <a href="../OffresDeStage/postuler.php?ID_offre=<?php echo $ID_offre;?>"><button class="btn btn-default">Postuler</button></a>
                         </div>
