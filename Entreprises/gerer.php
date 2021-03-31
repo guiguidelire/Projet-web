@@ -7,11 +7,11 @@ try {
         throw new Exception("NonConnecte");
     }
     else{
-        if($_COOKIE['Fonction']==1 || $_COOKIE['Fonction']==3){
+        if($_COOKIE['Fonction']==2 || $_COOKIE['Fonction']==4){
             throw new Exception("NonDroit");
         }
         else
-            require 'vueDétailEntreprise.php';
+            require 'vueGerer.php';
     }
 }catch (Exception $e) {
   $msgErreur = $e->getMessage();
